@@ -39,20 +39,20 @@ class ArgumentSolver {
         }
     }
 
-    void AddFlag(const String& key, bool value = false) {}
+    void addFlag(const String& key, bool value = false) {}
 
-    void AddFlag(const String& key, char shortKey, bool value = false) { AddFlag(key, value); }
+    void addFlag(const String& key, char shortKey, bool value = false) { addFlag(key, value); }
 
-    const HashMap<String, String>& GetFlags() { return flags; }
+    const HashMap<String, String>& getFlags() { return flags; }
 
-    const Array<String>& GetInvalidFlags() { return invalidFlags; }
+    const Array<String>& getInvalidFlags() { return invalidFlags; }
 
-    const Array<String>& GetArguments() { return arguments; }
+    const Array<String>& getArguments() { return arguments; }
 
   private:
-    void ParseFlags();
+    void parseFlags();
 
-    void ParseArguments();
+    void parseArguments();
 
   private:
     HashMap<String, bool> flagRules;
