@@ -1,14 +1,12 @@
 #pragma once 
 
 #include "Core/IO/Loop.h"
+#include "Core/Container/String.h"
+#include "Core/Container/Function.h"
 #include "uv.h"
-#include <string>
-#include <functional>
 
 namespace IO
 {
-    using String = std::string;
-
     using ResourceBuffer = uv_buf_t;
     using ResourceContext = uv_handle_t;
 
@@ -19,8 +17,8 @@ namespace IO
     };
 
     using StreamContext = uv_stream_t;
-    using StreamReadCallback = std::function<void(const String& buffer, int status)>;
-    using StreamWriteCallback = std::function<void(int status)>;
+    using StreamReadCallback = Function<void(const String& bytes, int status)>;
+    using StreamWriteCallback = Function<void(int status)>;
 
     class Stream : public Resource 
     {
@@ -29,9 +27,9 @@ namespace IO
 
         void StopReading();
 
-        void Write(const String& buffer, const StreamWriteCallback& callback);
+        void Write(const String& bytes, const StreamWriteCallback& callback);
 
-        void Write(const String& buffer);
+        void Write(const String& bytes);
 
         virtual StreamContext* GetContext() = 0;
 

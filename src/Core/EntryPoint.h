@@ -3,16 +3,11 @@
 #include "Core/Event/KeyEvent.h"
 #include "Core/IO/Loop.h"
 #include "Core/IO/Resource.h"
-#include "Core/UI/Buffer.h"
+#include "Core/Integer.h"
+#include "Core/UI/Component/Buffer.h"
 #include "Core/UI/Sequence.h"
 #include "Core/Utility/ByteChecker.h"
 #include "Core/Utility/EnumBitManipulator.h"
-
-enum class Mode 
-{
-    Motion,
-    Insertion,
-};
 
 class EntryPoint
 {
@@ -22,12 +17,12 @@ class EntryPoint
     void On(Event& event);
 
   private:
-    IO::Loop _loop;
-    IO::TTY _tty{_loop, 0};
-    
-    UI::Sequence _sequence = UI::Sequence::CreateFromEnv();
+    void ParseInputRaw(const String& bytes);
 
-    UI::Buffer _buffer;
+    void ParseInputSequence(const String& bytes);
 
-    Mode _mode = Mode::Motion;
+    void ParseInputSequenceKeyboard(const String& bytes, UintSize& cursor);
+
+    Context _context;
+    UI::Buffer _buffer{_context};
 };

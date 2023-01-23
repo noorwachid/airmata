@@ -23,6 +23,8 @@ namespace IO
 
         void Run(LoopMode mode = LoopMode::Default);
 
+        void Stop();
+
         LoopContext* GetContext();
 
     private:

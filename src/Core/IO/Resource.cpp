@@ -39,21 +39,21 @@ namespace IO
         uv_read_stop(GetContext());
     }
 
-    void Stream::Write(const String& buffer)
+    void Stream::Write(const String& bytes)
     {
-        Write(buffer, nullptr);
+        Write(bytes, nullptr);
     }
 
-    void Stream::Write(const String& buffer, const StreamWriteCallback& callback)
+    void Stream::Write(const String& bytes, const StreamWriteCallback& callback)
     {
         _writeCallback= callback;
 
         uv_buf_t* buf = new uv_buf_t;
         uv_write_t* writeRequest = new uv_write_t;
-        buf->base = new char[buffer.size()];
-        buf->len = buffer.size();
+        buf->base = new char[bytes.size()];
+        buf->len = bytes.size();
 
-        std::memcpy(buf->base, buffer.data(), buffer.size());
+        std::memcpy(buf->base, bytes.data(), bytes.size());
 
         writeRequest->data = buf;
 

@@ -18,6 +18,11 @@ namespace IO
         uv_run(GetContext(), static_cast<uv_run_mode>(mode));
     }
 
+    void Loop::Stop()
+    {
+        uv_stop(GetContext());
+    }
+
     LoopContext* Loop::GetContext()
     {
         return &_context;
