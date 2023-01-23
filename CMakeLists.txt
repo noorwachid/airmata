@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.9)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)  
 
 project(AirMata)
 
@@ -36,10 +35,14 @@ add_executable(AirMata
 	src/main.cpp
 )
 
-message(INFO ${CMAKE_MODULE_PATH})
-
 target_include_directories(AirMata PUBLIC src)
 target_include_directories(AirMata PRIVATE /usr/local/include)
 
+set_target_properties(AirMata PROPERTIES OUTPUT_NAME airmata)
+
+# Async IO 
 target_link_libraries(AirMata /usr/local/lib/libuv.a)
+
+# Terminal sequence DB parser
 target_link_libraries(AirMata /usr/local/lib/libunibilium.a)
+
