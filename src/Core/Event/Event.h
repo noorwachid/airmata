@@ -2,32 +2,29 @@
 
 #include "Core/Container/String.h"
 
-enum class EventType
-{
-    Unknown = 0,
+enum class EventType {
+    unknown = 0,
 
-    Key,
+    key,
 };
 
-enum class EventSubtype
-{
-    Unknown = 0,
-    
-    KeyPressed = 1,
-    KeyHeld,
-    KeyReleased,
+enum class EventSubtype {
+    unknown = 0,
+
+    keyPressed = 1,
+    keyHeld,
+    keyReleased,
 };
 
-struct Event 
-{
-    EventType type = EventType::Unknown;
-    EventSubtype subtype = EventSubtype::Unknown;
+struct Event {
+    EventType type = EventType::unknown;
+    EventSubtype subtype = EventSubtype::unknown;
 
-    Event(EventType newType): type(newType) {}
+    Event(EventType newType) : type(newType) {}
 
-    virtual String ToString() = 0;
+    virtual String toString() = 0;
 };
 
-String ToString(EventType type);
+String toString(EventType type);
 
-String ToString(EventSubtype subtype);
+String toString(EventSubtype subtype);

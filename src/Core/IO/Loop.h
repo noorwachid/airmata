@@ -1,33 +1,29 @@
-#pragma once 
+#pragma once
 
+#include "Core/Container/RC.h"
+#include "Core/IO/Action.h"
 #include <string>
-#include "uv.h"
 
-namespace IO
-{
-    using LoopContext = uv_loop_t;
-
-    enum class LoopMode
-    {
-        Default = 0,
-        Once,
-        NoWait
+namespace IO {
+    enum class LoopMode { 
+        default_ = UV_RUN_DEFAULT,
+        once = UV_RUN_ONCE, 
+        noWait = UV_RUN_NOWAIT 
     };
 
-    class Loop
-    {
-    public:
+    class Loop {
+      public:
         Loop();
 
         ~Loop();
 
-        void Run(LoopMode mode = LoopMode::Default);
+        void run(LoopMode mode = LoopMode::default_);
 
-        void Stop();
+        void stop();
 
-        LoopContext* GetContext();
+        LoopContext* getContext();
 
-    private:
-        LoopContext _context;
+      private:
+        LoopContext context;
     };
 }

@@ -2,11 +2,9 @@
 
 #include "Core/UI/Component/Component.h"
 
-namespace UI
-{
-    class StatusBar: public Component
-    {
+namespace UI {
+    class StatusBar : public Component {
       public:
-        StatusBar(Context& context);
+        StatusBar(Context& newContext);
     };
 }

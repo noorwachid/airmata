@@ -1,10 +1,9 @@
 #include "Core/EntryPoint.h"
 
-int main() 
-{
+int main() {
     EntryPoint entryPoint;
 
-    entryPoint.Run();
+    entryPoint.run();
 
     return 0;
 }

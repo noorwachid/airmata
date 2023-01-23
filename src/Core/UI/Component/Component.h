@@ -1,30 +1,28 @@
-#pragma once 
+#pragma once
 
 #include "Core/Context.h"
 #include "Core/Event/Event.h"
 
-namespace UI 
-{
-    class Component
-    {
+namespace UI {
+    class Component {
       public:
-        Component(Context& context);
+        Component(Context& newContext);
 
-        virtual void On(Event& event);
+        virtual void on(Event& event);
 
-        virtual void Render();
+        virtual void render();
 
-        const Vector2& GetPosition() const;
-        const Vector2& GetSize() const;
+        const Vector2& getPosition() const;
+        const Vector2& getSize() const;
 
-        void SetPosition(const Vector2& position);
-        void SetSize(const Vector2& size);
+        void setPosition(const Vector2& newPosition);
+        void setSize(const Vector2& newSize);
 
       protected:
-        Context& _context;
+        Context& context;
 
       private:
-        Vector2 _position;
-        Vector2 _size;
+        Vector2 position;
+        Vector2 size;
     };
 };

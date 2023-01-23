@@ -1,16 +1,10 @@
-#pragma once 
+#pragma once
 
-#include "uv.h"
+#include "Core/Container/Array.h"
+#include "Core/Container/Function.h"
+#include "Core/Container/String.h"
+#include "Core/IO/LoopContext.h"
+#include "Core/Integer.h"
 
-namespace IO
-{
-    enum class ActionType
-    {
-        Unknown = 0,
-    };
-
-    class Action
-    {
-    };
-
+namespace IO {
 }

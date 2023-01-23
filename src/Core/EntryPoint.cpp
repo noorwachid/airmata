@@ -1,95 +1,77 @@
 #include "Core/EntryPoint.h"
 
-void EntryPoint::Run()
-{
-    _context.tty.SetMode(IO::TTYMode::Raw);
-    
-    _context.tty.Write(
-        _context.sequence.Get(UI::SequenceString::EnterCAMode) + 
-        _context.sequence.Get(UI::SequenceString::ClearScreen) + 
+void EntryPoint::run() {
+    context.tty.setMode(IO::TTYMode::Raw);
+
+    context.tty.write(
+        context.sequence.get(UI::SequenceString::enterCAMode) +
+        context.sequence.get(UI::SequenceString::clearScreen) + 
         "\x1b[>u\x1b[=" + std::to_string(0b1111) + "u"
     );
 
-    _context.tty.Read([this](const String& bytes, int status)
-    {
-        if (bytes[0] == '\x1B')
-            ParseInputSequence(bytes);
+    context.tty.read([this](const String& data, int status) {
+        if (data[0] == '\x1B')
+            parseInputSequence(data);
         else
-            ParseInputRaw(bytes);
+            parseInputRaw(data);
     });
-    
-    _context.loop.Run();
-    
-    _context.tty.Write(
-        "\x1b[<u" + 
-        _context.sequence.Get(UI::SequenceString::ClearScreen) +
-        _context.sequence.Get(UI::SequenceString::ExitCAMode)
+
+    context.loop.run();
+
+    context.tty.write(
+        "\x1b[<u" + context.sequence.get(UI::SequenceString::clearScreen) +
+        context.sequence.get(UI::SequenceString::exitCAMode)
     );
-    
-    _context.tty.ResetMode();
+
+    context.tty.resetMode();
 }
 
-void EntryPoint::On(Event& event)
-{
-    _buffer.On(event);
-}
+void EntryPoint::on(Event& event) { buffer.on(event); }
 
-void EntryPoint::ParseInputRaw(const String& bytes)
-{
-}
+void EntryPoint::parseInputRaw(const String& data) {}
 
-void EntryPoint::ParseInputSequence(const String& bytes)
-{
+void EntryPoint::parseInputSequence(const String& data) {
     UintSize cursor = 1;
 
-    if (bytes[cursor] == '[') 
-    {
-        ParseInputSequenceKeyboard(bytes, cursor);
+    if (data[cursor] == '[') {
+        parseInputSequenceKeyboard(data, cursor);
     }
 }
 
-void EntryPoint::ParseInputSequenceKeyboard(const String& bytes, UintSize& cursor)
-{
+void EntryPoint::parseInputSequenceKeyboard(const String& data, UintSize& cursor) {
     KeyEvent event;
-    event.type = EventType::Key;
-    event.subtype = EventSubtype::KeyPressed;
+    event.type = EventType::key;
+    event.subtype = EventSubtype::keyPressed;
 
     ++cursor;
-    
-    if (Utility::IsIntegerByte(bytes[cursor])) 
-    {
-        event.key = static_cast<Key>(Utility::FindIntegerSubBytes(bytes, cursor));
+
+    if (Utility::isIntegerByte(data[cursor])) {
+        event.key = static_cast<Key>(Utility::findIntegerSubBytes(data, cursor));
         event.codepoint = static_cast<int>(event.key);
 
-        if (bytes[cursor] == ':')
-        {
+        if (data[cursor] == ':') {
             ++cursor;
 
-            if (Utility::IsIntegerByte(bytes[cursor]))
-            {
-                event.codepoint = Utility::FindIntegerSubBytes(bytes, cursor);
-            }
-            else if (bytes[cursor] == ':')
-            {
+            if (Utility::isIntegerByte(data[cursor])) {
+                event.codepoint = Utility::findIntegerSubBytes(data, cursor);
+            } else if (data[cursor] == ':') {
                 ++cursor;
-                int idk = Utility::FindIntegerSubBytes(bytes, cursor);
+                int idk = Utility::findIntegerSubBytes(data, cursor);
             }
         }
-        
-        if (bytes[cursor] == ';')
-        {
+
+        if (data[cursor] == ';') {
             ++cursor;
 
-            event.modifierKey = static_cast<ModifierKey>(Utility::FindIntegerSubBytes(bytes, cursor) - 1);
+            event.modifierKey = static_cast<ModifierKey>(Utility::findIntegerSubBytes(data, cursor) - 1);
 
-            if (bytes[cursor] == ':')
-            {
+            if (data[cursor] == ':') {
                 ++cursor;
 
-                event.subtype = static_cast<EventSubtype>(Utility::FindIntegerSubBytes(bytes, cursor));
+                event.subtype = static_cast<EventSubtype>(Utility::findIntegerSubBytes(data, cursor));
             }
-        } 
+        }
     }
 
-    On(event);
+    on(event);
 }

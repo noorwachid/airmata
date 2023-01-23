@@ -1,16 +1,13 @@
 #include "Core/Utility/ByteChecker.h"
 
-namespace Utility 
-{
-    bool IsControlByte(char byte) { return byte < ' '; }
+namespace Utility {
+    bool isControlByte(char byte) { return byte < ' '; }
 
-    bool IsIntegerByte(char byte) { return byte > '/' && byte < ':'; }
+    bool isIntegerByte(char byte) { return byte > '/' && byte < ':'; }
 
-    int FindIntegerSubBytes(const String &bytes, size_t &cursor) 
-    {
+    int findIntegerSubBytes(const String& bytes, size_t& cursor) {
         for (size_t i = cursor; i < bytes.size(); ++i)
-            if (!IsIntegerByte(bytes[i])) 
-            {
+            if (!isIntegerByte(bytes[i])) {
                 int result = std::stoi(bytes.substr(cursor, i - cursor));
                 cursor = i;
 
@@ -20,7 +17,7 @@ namespace Utility
         return 0;
     }
 
-    bool IsLowerCaseByte(char byte) { return byte > '`' && byte < '{'; }
+    bool isLowerCaseByte(char byte) { return byte > '`' && byte < '{'; }
 
-    bool IsUpperCaseByte(char byte) { return byte > '@' && byte < '['; }
+    bool isUpperCaseByte(char byte) { return byte > '@' && byte < '['; }
 }

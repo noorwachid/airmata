@@ -4,18 +4,16 @@
 #include "Core/IO/Resource.h"
 #include "Core/UI/Sequence.h"
 
-enum class Mode 
-{
-    Motion,
-    Insertion,
+enum class Mode {
+    motion,
+    insertion,
 };
 
-struct Context
-{
-    Mode mode = Mode::Motion;
+struct Context {
+    Mode mode = Mode::motion;
 
     IO::Loop loop;
     IO::TTY tty{loop, 0};
 
-    UI::Sequence sequence = UI::Sequence::CreateFromEnv();
+    UI::Sequence sequence = UI::Sequence::createFromEnv();
 };

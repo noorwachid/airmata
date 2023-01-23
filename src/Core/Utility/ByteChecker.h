@@ -2,15 +2,14 @@
 
 #include "Core/Container/String.h"
 
-namespace Utility
-{
-    bool IsControlByte(char byte);
+namespace Utility {
+    bool isControlByte(char byte);
 
-    bool IsIntegerByte(char byte);
+    bool isIntegerByte(char byte);
 
-    int FindIntegerSubBytes(const String &bytes, size_t &cursor);
+    int findIntegerSubBytes(const String& bytes, size_t& cursor);
 
-    bool IsLowerCaseByte(char byte);
+    bool isLowerCaseByte(char byte);
 
-    bool IsUpperCaseByte(char byte);
+    bool isUpperCaseByte(char byte);
 }

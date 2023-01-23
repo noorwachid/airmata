@@ -9,20 +9,19 @@
 #include "Core/Utility/ByteChecker.h"
 #include "Core/Utility/EnumBitManipulator.h"
 
-class EntryPoint
-{
+class EntryPoint {
   public:
-    void Run();
+    void run();
 
-    void On(Event& event);
+    void on(Event& event);
 
   private:
-    void ParseInputRaw(const String& bytes);
+    void parseInputRaw(const String& data);
 
-    void ParseInputSequence(const String& bytes);
+    void parseInputSequence(const String& data);
 
-    void ParseInputSequenceKeyboard(const String& bytes, UintSize& cursor);
+    void parseInputSequenceKeyboard(const String& data, UintSize& cursor);
 
-    Context _context;
-    UI::Buffer _buffer{_context};
+    Context context;
+    UI::Buffer buffer{context};
 };

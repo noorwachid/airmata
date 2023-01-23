@@ -1,22 +1,23 @@
 #pragma once
 
 #include "Core/Container/Array.h"
+#include "Core/IO/Action.h"
 #include "Core/UI/Component/Component.h"
 
-namespace UI
-{
-    class Buffer: public Component
-    {
+namespace UI {
+    class Buffer : public Component {
       public:
-        Buffer(Context& context);
+        Buffer(Context& newContext);
 
-        virtual void On(Event& event) override;
+        virtual void on(Event& event) override;
 
-        virtual void Render() override;
+        virtual void render() override;
+
+        void openFile();
 
       public:
-        Array<String> _data;
+        Array<String> data;
 
-        Vector2 _cursor;
+        Vector2 cursor;
     };
 }

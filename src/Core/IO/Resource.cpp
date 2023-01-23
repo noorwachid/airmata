@@ -1,15 +1,12 @@
 #include "Core/IO/Resource.h"
 
-namespace IO
-{
-    void Stream::Read(const StreamReadCallback& callback)
-    {
-        _readCallback = callback;
+namespace IO {
+    void Stream::read(const StreamReadCallback& callback) {
+        readCallback = callback;
         uv_read_start(
-            GetContext(),
+            getContext(),
 
-            [](ResourceContext* stream, size_t recomendedSize, ResourceBuffer* buf)
-            {
+            [](ResourceContext* stream, size_t recomendedSize, Buffer* buf) {
                 buf->len = 64; // Enough to contain common sequence
                 buf->base = new char[buf->len];
 
@@ -17,14 +14,12 @@ namespace IO
                     buf->base[i] = 0;
             },
 
-            [](StreamContext* stream, ssize_t result, const ResourceBuffer* buf)
-            {
-                if (result < 0) 
-                {
+            [](StreamContext* stream, ssize_t result, const Buffer* buf) {
+                if (result < 0) {
                     delete[] buf->base;
                 }
 
-                auto callback = reinterpret_cast<Stream*>(stream->data)->_readCallback;
+                auto callback = reinterpret_cast<Stream*>(stream->data)->readCallback;
 
                 if (callback != nullptr)
                     callback(buf->base, result);
@@ -34,19 +29,10 @@ namespace IO
         );
     }
 
-    void Stream::StopReading()
-    {
-        uv_read_stop(GetContext());
-    }
+    void Stream::stopReading() { uv_read_stop(getContext()); }
 
-    void Stream::Write(const String& bytes)
-    {
-        Write(bytes, nullptr);
-    }
-
-    void Stream::Write(const String& bytes, const StreamWriteCallback& callback)
-    {
-        _writeCallback= callback;
+    void Stream::write(const String& bytes, const StreamWriteCallback& callback) {
+        writeCallback = callback;
 
         uv_buf_t* buf = new uv_buf_t;
         uv_write_t* writeRequest = new uv_write_t;
@@ -57,46 +43,32 @@ namespace IO
 
         writeRequest->data = buf;
 
-        uv_write(writeRequest, GetContext(), buf, 1,
-            [](uv_write_t* writeRequest, int status)
-            {
-                auto callback = reinterpret_cast<Stream*>(writeRequest->handle->data)->_writeCallback;
+        uv_write(writeRequest, getContext(), buf, 1, [](uv_write_t* writeRequest, int status) {
+            auto callback = reinterpret_cast<Stream*>(writeRequest->handle->data)->writeCallback;
 
-                if (callback != nullptr)
-                    callback(status);
+            if (callback != nullptr)
+                callback(status);
 
-                auto data = reinterpret_cast<uv_buf_t*>(writeRequest->data);
-                delete data->base;
-                delete writeRequest;
-            }
-        );
-    }
-    
-    TTY::TTY(Loop& loop, int fd, bool readable)
-    {
-        uv_tty_init(loop.GetContext(), &_context, fd, readable);
-        _context.data = this;
+            auto data = reinterpret_cast<uv_buf_t*>(writeRequest->data);
+            delete data->base;
+            delete writeRequest;
+        });
     }
 
-    StreamContext* TTY::GetContext()
-    {
-        return reinterpret_cast<StreamContext*>(&_context);
+    TTY::TTY(Loop& loop, int fd, bool readable) {
+        uv_tty_init(loop.getContext(), &context, fd, readable);
+        context.data = this;
     }
 
-    void TTY::SetMode(TTYMode mode)
-    {
-        uv_tty_set_mode(&_context, static_cast<uv_tty_mode_t>(mode));
+    StreamContext* TTY::getContext() { return reinterpret_cast<StreamContext*>(&context); }
+
+    void TTY::setMode(TTYMode mode) { uv_tty_set_mode(&context, static_cast<uv_tty_mode_t>(mode)); }
+
+    void TTY::resetMode() { uv_tty_reset_mode(); }
+
+    const TTYSize& TTY::getSize() {
+        uv_tty_get_winsize(&context, &size.width, &size.height);
+        return size;
     }
 
-    void TTY::ResetMode()
-    {
-        uv_tty_reset_mode();
-    }
-
-    const TTYSize& TTY::GetSize()
-    {
-        uv_tty_get_winsize(&_context, &_size.width, &_size.height);
-        return _size;
-    }
-    
 }
