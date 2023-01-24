@@ -36,6 +36,7 @@ add_executable(AirMata
     src/Core/Container/Vector.cpp
 
     src/Core/ArgumentSolver.h
+    src/Core/ArgumentSolver.cpp
 
     src/Core/Context.h
 
