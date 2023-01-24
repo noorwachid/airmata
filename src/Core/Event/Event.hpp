@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Container/String.h"
+#include "Core/Container/String.hpp"
 
 enum class EventType {
     unknown = 0,

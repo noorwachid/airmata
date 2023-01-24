@@ -1,4 +1,4 @@
-#include "Core/UI/Component/Component.h"
+#include "Core/UI/Component/Component.hpp"
 
 namespace UI {
     Component::Component(Context& newContext) : context{newContext} {}

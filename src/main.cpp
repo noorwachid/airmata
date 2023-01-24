@@ -1,6 +1,8 @@
-#include "Core/EntryPoint.h"
+#include "Core/ArgumentSolver.hpp"
+#include "Core/EntryPoint.hpp"
+#include <iostream>
 
-int main() {
+int main(int argc, char** argv) {
     EntryPoint entryPoint;
 
     entryPoint.run();

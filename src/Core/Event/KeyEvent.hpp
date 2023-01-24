@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Event/Event.h"
-#include "Core/Utility/EnumBitManipulator.h"
+#include "Core/Event/Event.hpp"
+#include "Core/Utility/EnumBitManipulator.hpp"
 
 enum class ModifierKey {
     none = 0b0,

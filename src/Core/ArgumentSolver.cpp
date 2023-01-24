@@ -1,4 +1,4 @@
-#include "Core/ArgumentSolver.h"
+#include "Core/ArgumentSolver.hpp"
 
 void ArgumentSolver::addOption(const String& key, UintSize consuming) { optionRules[key] = consuming; }
 

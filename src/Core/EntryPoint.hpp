@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Core/Event/KeyEvent.h"
-#include "Core/IO/Loop.h"
-#include "Core/IO/Resource.h"
-#include "Core/Integer.h"
-#include "Core/UI/Component/Buffer.h"
-#include "Core/UI/Sequence.h"
-#include "Core/Utility/ByteChecker.h"
-#include "Core/Utility/EnumBitManipulator.h"
+#include "Core/Event/KeyEvent.hpp"
+#include "Core/IO/Loop.hpp"
+#include "Core/IO/Resource.hpp"
+#include "Core/Integer.hpp"
+#include "Core/UI/Component/Buffer.hpp"
+#include "Core/UI/Sequence.hpp"
+#include "Core/Utility/ByteChecker.hpp"
+#include "Core/Utility/EnumBitManipulator.hpp"
 
 class EntryPoint {
   public:

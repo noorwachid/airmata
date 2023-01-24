@@ -1,6 +1,6 @@
-#include "Core/UI/Component/Buffer.h"
-#include "Core/Event/KeyEvent.h"
-#include "Core/IO/Action.h"
+#include "Core/UI/Component/Buffer.hpp"
+#include "Core/Event/KeyEvent.hpp"
+#include "Core/IO/Action.hpp"
 
 namespace UI {
     Buffer::Buffer(Context& newContext) : Component{newContext} {}

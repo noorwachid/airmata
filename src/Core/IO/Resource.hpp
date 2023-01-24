@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Container/Function.h"
-#include "Core/Container/String.h"
-#include "Core/IO/Loop.h"
+#include "Core/Container/Function.hpp"
+#include "Core/Container/String.hpp"
+#include "Core/IO/Loop.hpp"
 #include "uv.h"
 
 namespace IO {

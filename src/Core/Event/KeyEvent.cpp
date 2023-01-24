@@ -1,4 +1,4 @@
-#include "Core/Event/KeyEvent.h"
+#include "Core/Event/KeyEvent.hpp"
 
 String toString(ModifierKey key) {
     switch (key) {

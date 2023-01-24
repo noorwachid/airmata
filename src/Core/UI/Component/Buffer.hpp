@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Container/Array.h"
-#include "Core/IO/Action.h"
-#include "Core/UI/Component/Component.h"
+#include "Core/Container/Array.hpp"
+#include "Core/IO/Action.hpp"
+#include "Core/UI/Component/Component.hpp"
 
 namespace UI {
     class Buffer : public Component {

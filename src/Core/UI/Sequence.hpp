@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Container/String.h"
-#include "Core/Container/Vector.h"
+#include "Core/Container/String.hpp"
+#include "Core/Container/Vector.hpp"
 
 extern "C" {
     #include "unibilium.h"

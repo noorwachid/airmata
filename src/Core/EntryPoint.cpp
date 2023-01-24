@@ -1,4 +1,4 @@
-#include "Core/EntryPoint.h"
+#include "Core/EntryPoint.hpp"
 
 void EntryPoint::run() {
     context.tty.setMode(IO::TTYMode::Raw);

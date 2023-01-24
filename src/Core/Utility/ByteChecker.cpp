@@ -1,4 +1,4 @@
-#include "Core/Utility/ByteChecker.h"
+#include "Core/Utility/ByteChecker.hpp"
 
 namespace Utility {
     bool isControlByte(char byte) { return byte < ' '; }

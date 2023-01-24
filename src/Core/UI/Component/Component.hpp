@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Context.h"
-#include "Core/Event/Event.h"
+#include "Core/Context.hpp"
+#include "Core/Event/Event.hpp"
 
 namespace UI {
     class Component {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/IO/Loop.h"
-#include "Core/IO/Resource.h"
-#include "Core/UI/Sequence.h"
+#include "Core/IO/Loop.hpp"
+#include "Core/IO/Resource.hpp"
+#include "Core/UI/Sequence.hpp"
 
 enum class Mode {
     motion,

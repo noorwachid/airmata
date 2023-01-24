@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Core/Container/Array.h"
-#include "Core/Container/HashMap.h"
-#include "Core/Container/RC.h"
-#include "Core/Container/String.h"
-#include "Core/Integer.h"
+#include "Core/Container/Array.hpp"
+#include "Core/Container/HashMap.hpp"
+#include "Core/Container/String.hpp"
+#include "Core/Integer.hpp"
 #include <iostream>
 
 class ArgumentSolver {

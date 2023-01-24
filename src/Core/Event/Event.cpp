@@ -1,4 +1,4 @@
-#include "Core/Event/Event.h"
+#include "Core/Event/Event.hpp"
 
 String toString(EventType type) {
     switch (type) {

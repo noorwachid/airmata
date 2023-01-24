@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/UI/Component/Component.h"
+#include "Core/UI/Component/Component.hpp"
 
 namespace UI {
     class StatusBar : public Component {
