@@ -162,14 +162,6 @@ namespace Zoo {
 </div>
 ```
 
-
-### Body
-```
-<div class="label-view" id="nice">[
-    Mountain Fuji
-]</div>
-```
-
 ## Git 
 ### Hunk
 ```
