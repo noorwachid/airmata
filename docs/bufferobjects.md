@@ -28,22 +28,22 @@ Quick [brown-fox]. Jumps over the lazy dog.
 ```
 [Tears are a clear liquid secreted by the lacrimal glands (tear gland) found in the eyes of all land mammals. 
 Tears are made up of water, electrolytes, proteins, lipids, and mucins that form layers on the surface of eyes. 
-The different types of tears—basal, reflex, and emotional—vary significantly in composition.]
+    The different types of tears—basal, reflex, and emotional—vary significantly in composition.
+    The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system. 
+Tears also occur as a part of the body's natural pain response.]
 
-The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system. 
-Tears also occur as a part of the body's natural pain response. 
 Emotional secretion of tears may serve a biological function by excreting stress-inducing hormones built up through times of emotional distress. 
 Tears have symbolic significance among humans.
 ```
 
 ## Indentation
 ```
-    [Tears are a clear liquid secreted by the lacrimal glands (tear gland) found in the eyes of all land mammals. 
-    Tears are made up of water, electrolytes, proteins, lipids, and mucins that form layers on the surface of eyes. 
-    The different types of tears—basal, reflex, and emotional—vary significantly in composition.]
+Tears are a clear liquid secreted by the lacrimal glands (tear gland) found in the eyes of all land mammals. 
+Tears are made up of water, electrolytes, proteins, lipids, and mucins that form layers on the surface of eyes. 
+    [The different types of tears—basal, reflex, and emotional—vary significantly in composition.
+    The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system.]
+Tears also occur as a part of the body's natural pain response.
 
-The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system. 
-Tears also occur as a part of the body's natural pain response. 
 Emotional secretion of tears may serve a biological function by excreting stress-inducing hormones built up through times of emotional distress. 
 Tears have symbolic significance among humans.
 ```
