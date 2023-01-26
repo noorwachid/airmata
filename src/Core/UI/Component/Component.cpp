@@ -1,17 +1,18 @@
-#include "Core/UI/Component/Component.hpp"
+#include "Core/UI/Component/Component.h"
 
-namespace UI {
+namespace UI
+{
     Component::Component(Context& newContext) : context{newContext} {}
 
-    void Component::on(Event& event){};
+    void Component::On(Event& event){};
 
-    void Component::render(){};
+    void Component::Render(){};
 
-    const Vector2& Component::getPosition() const { return position; }
+    const Vector2& Component::GetPosition() const { return position; }
 
-    const Vector2& Component::getSize() const { return size; }
+    const Vector2& Component::GetSize() const { return size; }
 
-    void Component::setPosition(const Vector2& newPosition) { position = newPosition; }
+    void Component::SetPosition(const Vector2& newPosition) { position = newPosition; }
 
-    void Component::setSize(const Vector2& newSize) { size = newSize; }
+    void Component::SetSize(const Vector2& newSize) { size = newSize; }
 }

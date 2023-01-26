@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Core/Container/String.hpp"
+#include "Core/Container/String.h"
 
-enum class EventType {
+enum class EventType
+{
     unknown = 0,
 
     key,
 };
 
-enum class EventSubtype {
+enum class EventSubtype
+{
     unknown = 0,
 
     keyPressed = 1,
@@ -16,15 +18,16 @@ enum class EventSubtype {
     keyReleased,
 };
 
-struct Event {
+struct Event
+{
     EventType type = EventType::unknown;
     EventSubtype subtype = EventSubtype::unknown;
 
     Event(EventType newType) : type(newType) {}
 
-    virtual String toString() = 0;
+    virtual String ToString() = 0;
 };
 
-String toString(EventType type);
+String ToString(EventType type);
 
-String toString(EventSubtype subtype);
+String ToString(EventSubtype subtype);

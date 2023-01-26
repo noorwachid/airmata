@@ -1,15 +1,17 @@
 #pragma once
 
-#include "Core/IO/Loop.hpp"
-#include "Core/IO/Resource.hpp"
-#include "Core/UI/Sequence.hpp"
+#include "Core/IO/Loop.h"
+#include "Core/IO/Resource.h"
+#include "Core/UI/Sequence.h"
 
-enum class Mode {
+enum class Mode
+{
     motion,
     insertion,
 };
 
-struct Context {
+struct Context
+{
     Mode mode = Mode::motion;
 
     IO::Loop loop;

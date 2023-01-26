@@ -1,7 +1,7 @@
 ---
 Language: Cpp
 
-BreakBeforeBraces: Attach
+BreakBeforeBraces: Allman
 IndentWidth: 4
 AlignAfterOpenBracket: BlockIndent
 PointerAlignment: Left
@@ -16,4 +16,5 @@ ColumnLimit: 120
 AlwaysBreakTemplateDeclarations: Yes
 
 IndentCaseLabels: true
+AccessModifierOffset: -4
 ---

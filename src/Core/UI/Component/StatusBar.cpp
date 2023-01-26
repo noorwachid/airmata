@@ -1,5 +1,6 @@
-#include "Core/UI/Component/StatusBar.hpp"
+#include "Core/UI/Component/StatusBar.h"
 
-namespace UI {
+namespace UI
+{
     StatusBar::StatusBar(Context& newContext) : Component{newContext} {};
 }

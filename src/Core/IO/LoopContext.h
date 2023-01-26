@@ -2,7 +2,8 @@
 
 #include "uv.h"
 
-namespace IO {
+namespace IO
+{
     using Buffer = uv_buf_t;
     using LoopContext = uv_loop_t;
 }

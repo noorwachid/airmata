@@ -1,158 +1,162 @@
-#include "Core/Event/KeyEvent.hpp"
+#include "Core/Event/KeyEvent.h"
 
-String toString(ModifierKey key) {
-    switch (key) {
-        case ModifierKey::none:
+String ToString(ModifierKey key)
+{
+    switch (key)
+    {
+        case ModifierKey::None:
             return "None";
-        case ModifierKey::shift:
+        case ModifierKey::Shift:
             return "Shift";
-        case ModifierKey::alt:
+        case ModifierKey::Alt:
             return "Alt";
-        case ModifierKey::ctrl:
+        case ModifierKey::Ctrl:
             return "Ctrl";
-        case ModifierKey::super:
+        case ModifierKey::Super:
             return "Super";
-        case ModifierKey::hyper:
+        case ModifierKey::Hyper:
             return "Hyper";
-        case ModifierKey::meta:
+        case ModifierKey::Meta:
             return "Meta";
-        case ModifierKey::capsLock:
+        case ModifierKey::CapsLock:
             return "CapsLock";
-        case ModifierKey::numLock:
+        case ModifierKey::NumLock:
             return "NumLock";
         default:
             return "[Unknown]";
     }
 }
 
-String toString(Key key) {
-    switch (key) {
-        case Key::n1:
+String ToString(Key key)
+{
+    switch (key)
+    {
+        case Key::N1:
             return "n1";
-        case Key::n2:
+        case Key::N2:
             return "n2";
-        case Key::n3:
+        case Key::N3:
             return "n3";
-        case Key::n4:
+        case Key::N4:
             return "n4";
-        case Key::n5:
+        case Key::N5:
             return "n5";
-        case Key::n6:
+        case Key::N6:
             return "n6";
-        case Key::n7:
+        case Key::N7:
             return "n7";
-        case Key::n8:
+        case Key::N8:
             return "n8";
-        case Key::n9:
+        case Key::N9:
             return "n9";
-        case Key::n0:
+        case Key::N0:
             return "n0";
 
-        case Key::a:
+        case Key::A:
             return "a";
-        case Key::b:
+        case Key::B:
             return "b";
-        case Key::c:
+        case Key::C:
             return "c";
-        case Key::d:
+        case Key::D:
             return "d";
-        case Key::e:
+        case Key::E:
             return "e";
-        case Key::f:
+        case Key::F:
             return "f";
-        case Key::g:
+        case Key::G:
             return "g";
-        case Key::h:
+        case Key::H:
             return "h";
-        case Key::i:
+        case Key::I:
             return "i";
-        case Key::j:
+        case Key::J:
             return "j";
-        case Key::k:
+        case Key::K:
             return "k";
-        case Key::l:
+        case Key::L:
             return "l";
-        case Key::m:
+        case Key::M:
             return "m";
-        case Key::n:
+        case Key::N:
             return "n";
-        case Key::o:
+        case Key::O:
             return "o";
-        case Key::p:
+        case Key::P:
             return "p";
-        case Key::q:
+        case Key::Q:
             return "q";
-        case Key::r:
+        case Key::R:
             return "r";
-        case Key::s:
+        case Key::S:
             return "s";
-        case Key::t:
+        case Key::T:
             return "t";
-        case Key::u:
+        case Key::U:
             return "u";
-        case Key::v:
+        case Key::V:
             return "v";
-        case Key::w:
+        case Key::W:
             return "w";
-        case Key::x:
+        case Key::X:
             return "x";
-        case Key::y:
+        case Key::Y:
             return "y";
-        case Key::z:
+        case Key::Z:
             return "z";
 
-        case Key::space:
+        case Key::Space:
             return "space";
-        case Key::period:
+        case Key::Period:
             return "period";
-        case Key::comma:
+        case Key::Comma:
             return "comma";
-        case Key::apostrophe:
+        case Key::Apostrophe:
             return "apostrophe";
-        case Key::minus:
+        case Key::Minus:
             return "minus";
-        case Key::equal:
+        case Key::Equal:
             return "equal";
-        case Key::semicolon:
+        case Key::Semicolon:
             return "semicolon";
-        case Key::backtick:
+        case Key::Backtick:
             return "backtick";
-        case Key::slash:
+        case Key::Slash:
             return "slash";
-        case Key::backslash:
+        case Key::Backslash:
             return "backslash";
-        case Key::lBracket:
+        case Key::LBracket:
             return "lBracket";
-        case Key::rBracket:
+        case Key::RBracket:
             return "rBracket";
 
-        case Key::return_:
+        case Key::Return_:
             return "return";
-        case Key::escape:
+        case Key::Escape:
             return "escape";
-        case Key::tab:
+        case Key::Tab:
             return "tab";
-        case Key::backspace:
+        case Key::Backspace:
             return "backspace";
-        case Key::delete_:
+        case Key::Delete_:
             return "delete";
 
-        case Key::lShift:
+        case Key::LShift:
             return "lShift";
-        case Key::lCtrl:
+        case Key::LCtrl:
             return "lCtrl";
-        case Key::lAlt:
+        case Key::LAlt:
             return "lAlt";
-        case Key::lSuper:
+        case Key::LSuper:
             return "lSuper";
 
-        case Key::rShift:
+        case Key::RShift:
             return "rShift";
-        case Key::rCtrl:
+        case Key::RCtrl:
             return "rCtrl";
-        case Key::rAlt:
+        case Key::RAlt:
             return "rAlt";
-        case Key::rSuper:
+        case Key::RSuper:
             return "rSuper";
 
         default:
@@ -160,23 +164,22 @@ String toString(Key key) {
     }
 }
 
-String KeyEvent::toString() {
+String KeyEvent::ToString()
+{
     String b;
 
-    b += ::toString(subtype) + " ";
+    b += ::ToString(subtype) + " ";
 
-    if (modifierKey != ModifierKey::none) {
-        if ((modifierKey & ModifierKey::ctrl) == ModifierKey::ctrl)
-            b += ::toString(modifierKey) + " + ";
+    if (modifierKey != ModifierKey::None)
+    {
+        if ((modifierKey & ModifierKey::Ctrl) == ModifierKey::Ctrl)
+            b += ::ToString(modifierKey) + " + ";
 
-        if ((modifierKey & ModifierKey::alt) == ModifierKey::alt)
-            b += ::toString(modifierKey) + " + ";
-
-        if ((modifierKey & ModifierKey::shift) == ModifierKey::shift)
-            b += ::toString(modifierKey) + " + ";
+        if ((modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+            b += ::ToString(modifierKey) + " + ";
     }
 
-    b += ::toString(key);
+    b += ::ToString(key);
 
     return b;
 }

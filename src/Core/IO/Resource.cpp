@@ -1,4 +1,5 @@
-#include "Core/IO/Resource.hpp"
+#include "Core/IO/Resource.h"
 
-namespace IO {
+namespace IO
+{
 }

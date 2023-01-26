@@ -1,7 +1,9 @@
-#include "Core/Event/Event.hpp"
+#include "Core/Event/Event.h"
 
-String toString(EventType type) {
-    switch (type) {
+String ToString(EventType type)
+{
+    switch (type)
+    {
         case EventType::key:
             return "Key";
         default:
@@ -9,10 +11,12 @@ String toString(EventType type) {
     }
 }
 
-String toString(EventSubtype subtype) {
+String ToString(EventSubtype subtype)
+{
     return std::to_string(static_cast<int>(subtype));
 
-    switch (subtype) {
+    switch (subtype)
+    {
         case EventSubtype::keyPressed:
             return "KeyPressed";
         case EventSubtype::keyHeld:
