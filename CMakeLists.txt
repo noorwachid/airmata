@@ -34,6 +34,7 @@ add_executable(AirMata
     src/Core/Container/Function.hpp
     src/Core/Container/Vector.hpp
     src/Core/Container/Vector.cpp
+    src/Core/Container/HashTable.hpp
 
     src/Core/ArgumentSolver.hpp
     src/Core/ArgumentSolver.cpp

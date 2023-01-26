@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Container/Array.hpp"
-#include "Core/Container/HashMap.hpp"
+#include "Core/Container/HashTable.hpp"
 #include "Core/Container/String.hpp"
 #include "Core/Integer.hpp"
 #include <iostream>
@@ -21,7 +21,7 @@ class ArgumentSolver {
     void copyArgument(const String& argument);
 
   private:
-    HashMap<String, UintSize> optionRules;
+    HashTable<String, UintSize> optionRules;
 
     char** data = nullptr;
     UintSize dataSize = 0;
@@ -31,7 +31,7 @@ class ArgumentSolver {
 
   public:
     String program;
-    HashMap<String, Array<String>> options;
+    HashTable<String, Array<String>> options;
     Array<String> arguments;
     Array<String> invalidOptions;
 };
