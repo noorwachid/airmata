@@ -1,80 +1,109 @@
 # Buffer Objects
 ## Character
 ```
-Quick [b]rown-fox
+Quick [b]rown-fox. Jumps over the lazy dog.
 ```
 
 ## Word 
 ```
-[animal].say(); flush();
+Quick [brown]-fox. Jumps over the lazy dog.
 ```
 
 ## Phrase
 ```
-[animal.say](); flush();
+Quick [brown-fox]. Jumps over the lazy dog.
 ```
 
 ## Sentence
 ```
-[animal.say();] flush();
-```
-
-## Number
-```
-int value = [12];
-int color = [0xFF0000];
-int influence = [1.0];
-```
-
-## String
-```
-var a = ['here it is']
-var b = ["here it is"]
-var c = [`here it is`]
+[Quick brown-fox.] Jumps over the lazy dog.
 ```
 
 ## Line
 ```
-let g:nerdtree_always_active=1
-[call nerdtree#init]
-call nerdtree#toggle()
+[Quick brown-fox. Jumps over the lazy dog.]
 ```
 
 ## Paragraph
 ```
-[var c = 1;
-var d = 1;
-var e = 1;]
+[Tears are a clear liquid secreted by the lacrimal glands (tear gland) found in the eyes of all land mammals. 
+Tears are made up of water, electrolytes, proteins, lipids, and mucins that form layers on the surface of eyes. 
+The different types of tears—basal, reflex, and emotional—vary significantly in composition.]
 
-var f = 1;
-var g = 1;
-var h = 1;
+The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system. 
+Tears also occur as a part of the body's natural pain response. 
+Emotional secretion of tears may serve a biological function by excreting stress-inducing hormones built up through times of emotional distress. 
+Tears have symbolic significance among humans.
+```
+
+## Indentation
+```
+    [Tears are a clear liquid secreted by the lacrimal glands (tear gland) found in the eyes of all land mammals. 
+    Tears are made up of water, electrolytes, proteins, lipids, and mucins that form layers on the surface of eyes. 
+    The different types of tears—basal, reflex, and emotional—vary significantly in composition.]
+
+The functions of tears include lubricating the eyes (basal tears), removing irritants (reflex tears), and also aiding the immune system. 
+Tears also occur as a part of the body's natural pain response. 
+Emotional secretion of tears may serve a biological function by excreting stress-inducing hormones built up through times of emotional distress. 
+Tears have symbolic significance among humans.
+```
+
+## Number 
+```
+Descent from the Cross, c. [1435] by Rogier van der Weyden, the tears of Mary of Clopas
+```
+
+## Quotes
+```
+Carol said ["Go ahead."]
+Charlie said ['Go ahead.']
+Megan said [`Go ahead.`]
 ```
 
 ## Braces
 ```
-Array[<int, 3>] = {1, 2, 3};
-Array<int, 3> = [{1, 2, 3}];
-
-shade[(1, 2, 3)];
+The meeting will be held next year [(in March)].
+I grew up in Sacremento [[Sacramento]] in the 1960s.
+3 [{ 1 + 2}]
 ```
 
-``` 
-var array = [[1, 2, 3]];
+## Document
+```
+[select everything in the buffer.]
 ```
 
-## Block
+## C Families
+
+### Comment
+```
+[// Warning!]
+
+[/* 
+This page has make a grown man mad
+by the intricate template meta programming
+*/]
+```
 
 ### Statement
 ```
-[if 1 == 1 {
+[if (1 == 1) {
     doSomething()
+}]
+
+[switch (type) {
+    case 1: doOne(); break;
+    case 2: doTwo(); break;
 }]
 ```
 
-### Parameter
+### Generic
 ```
-void crazySetter([const String& newName], int newAge);
+component.get[<Transform>]();
+```
+
+### Argument
+```
+void set([const String& newName,] int newValue);
 ```
 
 ### Function
@@ -118,29 +147,35 @@ namespace Zoo {
 }]
 ```
 
+## XML Families
 ### Tag
-#### Attribute
+```
+[<div class="label-view" id="nice">
+    Mountain Fuji
+</div>]
+```
+
+### Attribute
 ```
 <div [class="label-view"] id="nice">
     Mountain Fuji
 </div>
 ```
 
-#### Name
-```
-<[div] class="label-view" id="nice">
-    Mountain Fuji
-</div>
-```
 
-#### Body
+### Body
 ```
 <div class="label-view" id="nice">[
     Mountain Fuji
 ]</div>
 ```
 
-## Document
+## Git 
+### Hunk
 ```
-[select everything in the document]
+[+ Hello
++ Darkness
++ My]
+Old 
+Friend
 ```
