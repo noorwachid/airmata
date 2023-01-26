@@ -60,7 +60,7 @@ enum class Key {
     period = '.',
     comma = ',',
     apostrophe = '\'',
-    dash = '-',
+    minus = '-',
     equal = '=',
     semicolon = ';',
     backtick = '`',

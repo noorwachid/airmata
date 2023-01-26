@@ -76,14 +76,14 @@
 
 ### Right Home Row: Buffer Motion
 
-| Key    | No Mask           | Shift Mask          | Ctrl Mask            |
-| --     | --                | --                  | --                   |
-| `D`    | Move bol nws      | Move bol            | Fold block           |
-| `H`    | Move column left  | Move word left      | Move eword left      |
-| `T`    | Move line up      | Move paragraph up   | Move eparagraph up   |
-| `N`    | Move line down    | Move paragraph down | Move eparagraph down |
-| `S`    | Move column right | Move word right     | Move eword right     |
-| `Dash` | Move eol nws      | Move bol            | Unfold block         |
+| Key     | No Mask           | Shift Mask          | Ctrl Mask            |
+| --      | --                | --                  | --                   |
+| `D`     | Move bol nws      | Move bol            | Fold block           |
+| `H`     | Move column left  | Move word left      | Move eword left      |
+| `T`     | Move line up      | Move paragraph up   | Move eparagraph up   |
+| `N`     | Move line down    | Move paragraph down | Move eparagraph down |
+| `S`     | Move column right | Move word right     | Move eword right     |
+| `Minus` | Move eol nws      | Move bol            | Unfold block         |
 
 ### Right Bottom Row: Window Motion
 

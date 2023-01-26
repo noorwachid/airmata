@@ -109,8 +109,8 @@ String toString(Key key) {
             return "comma";
         case Key::apostrophe:
             return "apostrophe";
-        case Key::dash:
-            return "dash";
+        case Key::minus:
+            return "minus";
         case Key::equal:
             return "equal";
         case Key::semicolon:
