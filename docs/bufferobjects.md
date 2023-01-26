@@ -6,12 +6,17 @@ Quick [b]rown-fox
 
 ## Word 
 ```
-[animal].say()
+[animal].say(); flush();
 ```
 
 ## Phrase
 ```
-[animal.say]()
+[animal.say](); flush();
+```
+
+## Sentence
+```
+[animal.say();] flush();
 ```
 
 ## Number
@@ -33,7 +38,6 @@ var c = [`here it is`]
 let g:nerdtree_always_active=1
 [call nerdtree#init]
 call nerdtree#toggle()
-
 ```
 
 ## Paragraph
