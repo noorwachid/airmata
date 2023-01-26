@@ -9,7 +9,7 @@ Quick [b]rown-fox. Jumps over the lazy dog.
 Quick [brown]-fox. Jumps over the lazy dog.
 ```
 
-## Phrase
+## Compound
 ```
 Quick [brown-fox]. Jumps over the lazy dog.
 ```
