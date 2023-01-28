@@ -12,12 +12,12 @@ namespace IO
         Data* data = new Data();
         data->callback = callback;
 
-        Context* context = new Context;
+        FileSystemContext* context = new FileSystemContext;
         context->data = data;
 
         uv_fs_open(
             loopContext, context, path.c_str(), O_RDONLY, 0,
-            [](Context* context)
+            [](FileSystemContext* context)
             {
                 Data* data = static_cast<Data*>(context->data);
                 data->callback(context->result);
@@ -36,7 +36,7 @@ namespace IO
             String buffer;
             ReadFileCallback callback;
 
-            static void OnRead(Context* context)
+            static void OnRead(FileSystemContext* context)
             {
                 Data* data = static_cast<Data*>(context->data);
 
@@ -69,7 +69,7 @@ namespace IO
         for (int i = 0; i < rpc; ++i)
             data->placeholder.base[i] = 0;
 
-        Context* context = new Context;
+        FileSystemContext* context = new FileSystemContext;
         context->data = data;
 
         uv_fs_read(loopContext, context, fd, &data->placeholder, 1, -1, Data::OnRead);

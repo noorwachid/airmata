@@ -72,10 +72,15 @@ enum class Key
     RBracket = ']',
 
     Escape = 27,
-    Return_ = 13,
+    Return = 13,
     Tab = 9,
     Backspace = 8,
-    Delete_ = 127,
+    Delete = 127,
+
+    Left,
+    Up,
+    Down,
+    Right,
 
     LShift = 57441,
     LCtrl = 57442,
@@ -98,7 +103,6 @@ struct KeyEvent : Event
     ModifierKey modifierKey = ModifierKey::None;
     int codepoint = 0;
 
-    KeyEvent() : Event(EventType::key) {}
-
     virtual String ToString() override;
 };
+

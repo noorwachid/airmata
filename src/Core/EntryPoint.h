@@ -12,16 +12,22 @@
 class EntryPoint
 {
 public:
+    void Enter();
+
     void Run();
 
     void On(Event& event);
+
+    void Exit();
 
 private:
     void ParseInputRaw(const String& data);
 
     void ParseInputSequence(const String& data);
 
-    void ParseInputKeyboardSequence(const String& data, UintSize& cursor);
+    void ParseInputKeyboardSequence(const String& data);
+
+    void ParseInputMouseSequence(const String& data);
 
     Context context;
     UI::Buffer buffer{context};

@@ -524,26 +524,68 @@ namespace UI
     class Sequence
     {
     public:
-        static Sequence createFromEnv() { return Sequence(unibi_from_env()); }
+        static Sequence CreateFromEnv() { return Sequence(unibi_from_env()); }
 
     private:
-        Sequence(SequenceContext* context) { _context = context; }
+        Sequence(SequenceContext* newContext) { context = newContext; }
 
     public:
-        ~Sequence() { unibi_destroy(_context); }
+        ~Sequence() { unibi_destroy(context); }
 
-        bool get(SequenceBoolean key) const { return unibi_get_bool(_context, static_cast<unibi_boolean>(key)); }
+        bool Get(SequenceBoolean key) const { return unibi_get_bool(context, static_cast<unibi_boolean>(key)); }
 
-        int get(SequenceInteger key) const { return unibi_get_num(_context, static_cast<unibi_numeric>(key)); }
+        int Get(SequenceInteger key) const { return unibi_get_num(context, static_cast<unibi_numeric>(key)); }
 
-        String Get(SequenceString key) const { return unibi_get_str(_context, static_cast<unibi_string>(key)); }
+        String Get(SequenceString key) const { return unibi_get_str(context, static_cast<unibi_string>(key)); }
 
-        String moveCursor(const Vector2 position) const
+        String EnableMouse()
         {
-            return "\x1B[" + std::to_string(position.y) + ';' + std::to_string(position.x) + 'H';
+            return "\x1B[?1002h\x1B[?1006h";
+        }
+
+        String DisableMouse()
+        {
+            return "\x1B[?1002l\x1B[?1006l";
+        }
+
+        String EnableKeyboard()
+        {
+            return "\x1B[>u\x1B[=" + std::to_string(0b1111) + "u";
+        }
+
+        String DisableKeyboard()
+        {
+            return "\x1B[<u";
+        }
+
+        String SetFG(int value) const 
+        { 
+            int r = value >> 16;
+            int g = (value >> 8) & 0xFF;
+            int b = value & 0xFF;
+            return "\x1B[38;2;" + std::to_string(r) + ';' + std::to_string(g) + ';' + std::to_string(b) + 'm';
+        }
+
+        String SetBG(int value) const 
+        { 
+            int r = value >> 16;
+            int g = (value >> 8) & 0xFF;
+            int b = value & 0xFF;
+
+            return "\x1B[48;2;" + std::to_string(r) + ';' + std::to_string(g) + ';' + std::to_string(b) + 'm';
+        }
+
+        String ResetAttribute() const
+        {
+            return "\x1B[0m";
+        }
+
+        String MoveCursor(const Vector2 position) const
+        {
+            return "\x1B[" + std::to_string(position.y + 1) + ';' + std::to_string(position.x + 1) + 'H';
         }
 
     private:
-        unibi_term* _context = nullptr;
+        unibi_term* context = nullptr;
     };
 }

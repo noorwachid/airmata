@@ -32,151 +32,161 @@ String ToString(Key key)
     switch (key)
     {
         case Key::N1:
-            return "n1";
+            return "N1";
         case Key::N2:
-            return "n2";
+            return "N2";
         case Key::N3:
-            return "n3";
+            return "N3";
         case Key::N4:
-            return "n4";
+            return "N4";
         case Key::N5:
-            return "n5";
+            return "N5";
         case Key::N6:
-            return "n6";
+            return "N6";
         case Key::N7:
-            return "n7";
+            return "N7";
         case Key::N8:
-            return "n8";
+            return "N8";
         case Key::N9:
-            return "n9";
+            return "N9";
         case Key::N0:
-            return "n0";
+            return "N0";
 
         case Key::A:
-            return "a";
+            return "A";
         case Key::B:
-            return "b";
+            return "B";
         case Key::C:
-            return "c";
+            return "C";
         case Key::D:
-            return "d";
+            return "D";
         case Key::E:
-            return "e";
+            return "E";
         case Key::F:
-            return "f";
+            return "F";
         case Key::G:
-            return "g";
+            return "G";
         case Key::H:
-            return "h";
+            return "H";
         case Key::I:
-            return "i";
+            return "I";
         case Key::J:
-            return "j";
+            return "J";
         case Key::K:
-            return "k";
+            return "K";
         case Key::L:
-            return "l";
+            return "L";
         case Key::M:
-            return "m";
+            return "M";
         case Key::N:
-            return "n";
+            return "N";
         case Key::O:
-            return "o";
+            return "O";
         case Key::P:
-            return "p";
+            return "P";
         case Key::Q:
-            return "q";
+            return "Q";
         case Key::R:
-            return "r";
+            return "R";
         case Key::S:
-            return "s";
+            return "S";
         case Key::T:
-            return "t";
+            return "T";
         case Key::U:
-            return "u";
+            return "U";
         case Key::V:
-            return "v";
+            return "V";
         case Key::W:
-            return "w";
+            return "W";
         case Key::X:
-            return "x";
+            return "X";
         case Key::Y:
-            return "y";
+            return "Y";
         case Key::Z:
-            return "z";
+            return "Z";
 
         case Key::Space:
-            return "space";
+            return "Space";
         case Key::Period:
-            return "period";
+            return "Period";
         case Key::Comma:
-            return "comma";
+            return "Comma";
         case Key::Apostrophe:
-            return "apostrophe";
+            return "Apostrophe";
         case Key::Minus:
-            return "minus";
+            return "Minus";
         case Key::Equal:
-            return "equal";
+            return "Equal";
         case Key::Semicolon:
-            return "semicolon";
+            return "Semicolon";
         case Key::Backtick:
-            return "backtick";
+            return "Backtick";
         case Key::Slash:
-            return "slash";
+            return "Slash";
         case Key::Backslash:
-            return "backslash";
+            return "Backslash";
         case Key::LBracket:
-            return "lBracket";
+            return "LBracket";
         case Key::RBracket:
-            return "rBracket";
+            return "RBracket";
 
-        case Key::Return_:
-            return "return";
+        case Key::Return:
+            return "Return";
         case Key::Escape:
-            return "escape";
+            return "Escape";
         case Key::Tab:
-            return "tab";
+            return "Tab";
         case Key::Backspace:
-            return "backspace";
-        case Key::Delete_:
-            return "delete";
+            return "Backspace";
+        case Key::Delete:
+            return "Delete";
 
         case Key::LShift:
-            return "lShift";
+            return "LShift";
         case Key::LCtrl:
-            return "lCtrl";
+            return "LCtrl";
         case Key::LAlt:
-            return "lAlt";
+            return "LAlt";
         case Key::LSuper:
-            return "lSuper";
+            return "LSuper";
 
         case Key::RShift:
-            return "rShift";
+            return "RShift";
         case Key::RCtrl:
-            return "rCtrl";
+            return "RCtrl";
         case Key::RAlt:
-            return "rAlt";
+            return "RAlt";
         case Key::RSuper:
-            return "rSuper";
+            return "RSuper";
+
+        case Key::Left:
+            return "Left";
+        case Key::Right:
+            return "Right";
+        case Key::Up:
+            return "Up";
+        case Key::Down:
+            return "Down";
 
         default:
-            return "[unknown]";
+            return "[Unknown]";
     }
 }
 
 String KeyEvent::ToString()
 {
-    String b;
-
-    b += ::ToString(subtype) + " ";
+    String b = name + " ";
 
     if (modifierKey != ModifierKey::None)
     {
         if ((modifierKey & ModifierKey::Ctrl) == ModifierKey::Ctrl)
-            b += ::ToString(modifierKey) + " + ";
+            b += ::ToString(ModifierKey::Ctrl) + " + ";
+
+        if ((modifierKey & ModifierKey::Alt) == ModifierKey::Alt)
+            b += ::ToString(ModifierKey::Alt) + " + ";
 
         if ((modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
-            b += ::ToString(modifierKey) + " + ";
+            b += ::ToString(ModifierKey::Shift) + " + ";
     }
 
     b += ::ToString(key);

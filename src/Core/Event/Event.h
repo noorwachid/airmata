@@ -1,33 +1,14 @@
 #pragma once
 
 #include "Core/Container/String.h"
-
-enum class EventType
-{
-    unknown = 0,
-
-    key,
-};
-
-enum class EventSubtype
-{
-    unknown = 0,
-
-    keyPressed = 1,
-    keyHeld,
-    keyReleased,
-};
+#include "Core/Integer.h"
 
 struct Event
 {
-    EventType type = EventType::unknown;
-    EventSubtype subtype = EventSubtype::unknown;
+    String name;
 
-    Event(EventType newType) : type(newType) {}
-
-    virtual String ToString() = 0;
+    virtual String ToString() 
+    {
+        return name;
+    };
 };
-
-String ToString(EventType type);
-
-String ToString(EventSubtype subtype);

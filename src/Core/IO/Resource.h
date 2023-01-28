@@ -2,6 +2,7 @@
 
 #include "Core/Container/Function.h"
 #include "Core/Container/String.h"
+#include "Core/Container/Vector.h"
 #include "Core/IO/Loop.h"
 #include "uv.h"
 
@@ -34,6 +35,7 @@ namespace IO
         void Read(const StreamReadCallback& callback)
         {
             readCallback = callback;
+
             uv_read_start(
                 this->template GetContext<StreamContext>(),
 
@@ -65,38 +67,42 @@ namespace IO
 
         void StopReading() { uv_read_stop(this->template GetContext<StreamContext>()); }
 
-        void Write(const String& data, const StreamWriteCallback& callback = nullptr)
+        void Write(const String& buffer, const StreamWriteCallback& callback = nullptr)
         {
-            writeCallback = callback;
+            struct Data 
+            {
+                Buffer buffer;
+                StreamWriteCallback callback;
+            };
 
-            Buffer* buf = new Buffer;
+            Data* data = new Data;
+            data->buffer.base = new char[buffer.size()];
+            data->buffer.len = buffer.size();
+            data->callback = callback;
+
             uv_write_t* writeRequest = new uv_write_t;
-            buf->base = new char[data.size()];
-            buf->len = data.size();
+            writeRequest->data = data;
 
-            std::memcpy(buf->base, data.data(), data.size());
-
-            writeRequest->data = buf;
+            std::memcpy(data->buffer.base, buffer.data(), buffer.size());
 
             uv_write(
-                writeRequest, this->template GetContext<StreamContext>(), buf, 1,
+                writeRequest, this->template GetContext<StreamContext>(), &data->buffer, 1,
                 [](uv_write_t* writeRequest, int status)
                 {
-                    auto callback = reinterpret_cast<Stream*>(writeRequest->handle->data)->writeCallback;
+                    auto data = reinterpret_cast<Data*>(writeRequest->data);
 
-                    if (callback != nullptr)
-                        callback(status);
+                    if (data->callback)
+                        data->callback(status);
 
-                    auto data = reinterpret_cast<Buffer*>(writeRequest->data);
-                    delete data->base;
+                    delete data->buffer.base;
+                    delete data;
                     delete writeRequest;
                 }
             );
         }
 
     private:
-        StreamReadCallback readCallback = nullptr;
-        StreamWriteCallback writeCallback = nullptr;
+        StreamReadCallback readCallback;
     };
 
     using TTYContext = uv_tty_t;
@@ -106,12 +112,6 @@ namespace IO
         Normal = UV_TTY_MODE_NORMAL,
         Raw = UV_TTY_MODE_RAW,
         IO = UV_TTY_MODE_IO,
-    };
-
-    struct TTYSize
-    {
-        int width;
-        int height;
     };
 
     class TTY final : public Stream<TTYContext>
@@ -127,13 +127,13 @@ namespace IO
 
         void ResetMode() { uv_tty_reset_mode(); }
 
-        const TTYSize& getSize()
+        const Vector2& GetSize()
         {
-            uv_tty_get_winsize(GetContext<TTYContext>(), &size.width, &size.height);
+            uv_tty_get_winsize(GetContext<TTYContext>(), &size.x, &size.y);
             return size;
         }
 
     private:
-        TTYSize size;
+        Vector2 size;
     };
 }

@@ -2,7 +2,9 @@
 
 namespace UI
 {
-    Component::Component(Context& newContext) : context{newContext} {}
+    Component::Component(Context& newContext) : context{newContext} {
+        SetSize(newContext.tty.GetSize());
+    }
 
     void Component::On(Event& event){};
 

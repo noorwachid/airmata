@@ -1,4 +1,49 @@
 # Buffer Objects
+## Selection Anchors
+### Begining ofObject : No Modifier
+```
+[v]oid say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+}
+```
+
+### End of Object : Shift 
+```
+void say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+[}]
+```
+
+### Object
+```
+[void say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+}]
+```
+
+### Inner Object 
+```
+void say(string type) {
+    [if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")]
+}
+```
+
 ## Character
 ```
 Quick [b]rown-fox. Jumps over the lazy dog.
@@ -7,11 +52,6 @@ Quick [b]rown-fox. Jumps over the lazy dog.
 ## Word 
 ```
 Quick [brown]-fox. Jumps over the lazy dog.
-```
-
-## Compound
-```
-Quick [brown-fox]. Jumps over the lazy dog.
 ```
 
 ## Sentence

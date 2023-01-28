@@ -8,10 +8,11 @@
 
 namespace IO
 {
+    using FileSystemContext = uv_fs_t;
+
     class FileSystem
     {
     public:
-        using Context = uv_fs_t;
         using OpenFileCallback = Function<void(int fd)>;
         using ReadFileCallback = Function<void(const String& buffer)>;
 

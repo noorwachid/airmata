@@ -6,16 +6,17 @@
 
 enum class Mode
 {
-    motion,
-    insertion,
+    WideMove,
+    PrecicionMove,
+    Insert,
 };
 
 struct Context
 {
-    Mode mode = Mode::motion;
+    Mode mode = Mode::WideMove;
 
     IO::Loop loop;
     IO::TTY tty{loop, 0};
 
-    UI::Sequence sequence = UI::Sequence::createFromEnv();
+    UI::Sequence sequence = UI::Sequence::CreateFromEnv();
 };

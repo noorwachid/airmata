@@ -17,6 +17,8 @@ add_executable(AirMata
     src/Core/Event/Event.cpp
     src/Core/Event/KeyEvent.h
     src/Core/Event/KeyEvent.cpp
+    src/Core/Event/MouseEvent.h
+    src/Core/Event/MouseEvent.cpp
 
     src/Core/Utility/ByteChecker.h
     src/Core/Utility/ByteChecker.cpp

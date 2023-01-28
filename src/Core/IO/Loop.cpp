@@ -9,11 +9,17 @@ namespace IO
         fs.loopContext = GetContext();
     }
 
-    Loop::~Loop() { uv_loop_close(GetContext()); }
+    Loop::~Loop() 
+    { 
+        uv_loop_close(GetContext()); 
+    }
 
     void Loop::Run(LoopMode mode) { uv_run(GetContext(), static_cast<uv_run_mode>(mode)); }
 
-    void Loop::Stop() { uv_stop(GetContext()); }
+    void Loop::Stop() 
+    { 
+        uv_stop(GetContext()); 
+    }
 
     LoopContext* Loop::GetContext() { return &context; }
 }
