@@ -129,19 +129,34 @@ Tears have symbolic significance among humans.
 Descent from the Cross, c. [1435] by Rogier van der Weyden, the tears of Mary of Clopas
 ```
 
-## Quotes
+## Quotes 
 ```
 Carol said ["Go ahead."]
 Charlie said ['Go ahead.']
 Megan said [`Go ahead.`]
 ```
 
-## Braces
+## Inner Quotes 
+```
+Carol said "[Go ahead.]"
+Charlie said '[Go ahead.]'
+Megan said `[Go ahead.]`
+```
+
+## Braces 
 ```
 The meeting will be held next year [(in March)].
-3 [{ 1 + 2}]
+3 [{1 + 2}]
 I grew up in Sacremento [[Sacramento]] in the 1960s.
 [<some.email@mail.com>]
+```
+
+## Inner Braces 
+```
+The meeting will be held next year ([in March]).
+3 {[1 + 2]}
+I grew up in Sacremento [[Sacramento]] in the 1960s.
+<[some.email@mail.com]>
 ```
 
 ## Document
@@ -161,10 +176,20 @@ by the intricate template meta programming
 */]
 ```
 
+### Inner Comment
+```
+// [Warning!]
+
+/* 
+[This page has make a grown man mad
+by the intricate template meta programming]
+*/
+```
+
 ### Statement
 ```
 [if (1 == 1) {
-    doSomething()
+    doSomething();
 }]
 
 [switch (type) {
@@ -173,14 +198,21 @@ by the intricate template meta programming
 }]
 ```
 
-### Generic
+### Inner Statement
 ```
-component.get[<Transform>]();
+if (1 == 1) {
+    [doSomething();]
+}
+
+switch (type) {
+    [case 1: doOne(); break;
+    case 2: doTwo(); break;]
+}
 ```
 
 ### Argument
 ```
-void set([const String& newName,] int newValue);
+void set([const String& newName], int newValue);
 ```
 
 ### Function
@@ -196,6 +228,21 @@ namespace Zoo {
     };
 }
 ```
+
+### Inner Function
+```
+namespace Zoo {
+    class Animal {
+    public:
+        void setName(const String& newName) {
+            [name = newName;]
+        }
+    private:
+        String name;
+    };
+}
+```
+
 ### Class
 ```
 namespace Zoo {
@@ -210,7 +257,21 @@ namespace Zoo {
 }
 ```
 
-### Namespace 
+### Class
+```
+namespace Zoo {
+    class Animal {
+    [public:
+        void setName(const String& newName) {
+            name = newName;
+        }
+    private:
+        String name;]
+    };
+}
+```
+
+### Namespace
 ```
 [namespace Zoo {
     class Animal {
@@ -224,15 +285,36 @@ namespace Zoo {
 }]
 ```
 
+### Inner Namespace
+```
+namespace Zoo {
+    [class Animal {
+    public:
+        void setName(const String& newName) {
+            name = newName;
+        }
+    private:
+        String name;
+    };]
+}
+```
+
 ## XML Families
-### Tag
+### Tag 
 ```
 [<div class="label-view" id="nice">
     Mountain Fuji
 </div>]
 ```
 
-### Attribute
+### Inner Tag 
+```
+<div class="label-view" id="nice">
+    [Mountain Fuji]
+</div>
+```
+
+### Attribute 
 ```
 <div [class="label-view"] id="nice">
     Mountain Fuji
