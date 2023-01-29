@@ -281,7 +281,7 @@ namespace Zoo {
 }
 ```
 
-### Class
+### Inner Class
 ```
 namespace Zoo {
     class Animal {
