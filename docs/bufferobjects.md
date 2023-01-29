@@ -139,8 +139,9 @@ Megan said [`Go ahead.`]
 ## Braces
 ```
 The meeting will be held next year [(in March)].
-I grew up in Sacremento [[Sacramento]] in the 1960s.
 3 [{ 1 + 2}]
+I grew up in Sacremento [[Sacramento]] in the 1960s.
+[<some.email@mail.com>]
 ```
 
 ## Document
