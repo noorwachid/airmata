@@ -13,7 +13,7 @@ void EntryPoint::Run()
 void EntryPoint::On(Event& event) { 
     buffer.On(event); 
 
-    context.tty.Write(event.ToString() + "\n");
+    // context.tty.Write(event.ToString() + "\n");
 }
 
 void EntryPoint::Enter()
@@ -65,17 +65,20 @@ void EntryPoint::ParseInputRaw(const String& data) {}
 
 void EntryPoint::ParseInputSequence(const String& data)
 {
-    String escaped;
-
-    for (char character: data) 
-    {
-        if (character < ' ')
-            escaped += "[" + std::to_string((int) character) + "]";
-        else
-            escaped += character;
-    }
-
-    context.tty.Write(escaped + "\n");
+    // String escaped;
+    //
+    // for (char character: data) 
+    // {
+    //     if (character < ' ')
+    //         escaped += "[" + std::to_string((int) character) + "]";
+    //     else
+    //         if (character == '9')
+    //             context.tty.StopReading();
+    //         else
+    //             escaped += character;
+    // }
+    //
+    // context.tty.Write(escaped + "\n");
 
     return data[2] != '<'
         ? ParseInputKeyboardSequence(data)
@@ -103,7 +106,7 @@ void EntryPoint::ParseInputKeyboardSequence(const String& sequence)
         case '7':
         case '8':
         case '9':
-            // Normal key
+            // Characters
             event.codepoint = Utility::FindIntegerSubBytes(sequence, cursor);
             event.key = static_cast<Key>(event.codepoint);
             
@@ -144,16 +147,29 @@ void EntryPoint::ParseInputKeyboardSequence(const String& sequence)
                 {
                     switch (Utility::FindIntegerSubBytes(sequence, cursor))
                     {
+                        default: break;
                         case 1: break;
                         case 2: break;
                         case 3: event.name = "KeyRelease"; break;
-                        default: break;
                     }
                 }
             }
+
+            switch (sequence[cursor]) 
+            {
+                // Characters
+                default: break;
+                case 'u': break;
+
+                // Arrows
+                case 'A': event.key = Key::Up; break;
+                case 'B': event.key = Key::Down; break;
+                case 'C': event.key = Key::Right; break;
+                case 'D': event.key = Key::Left; break;
+            }
             break;
 
-        // Arrow
+        // Arrows
         case 'A': event.key = Key::Up; break;
         case 'B': event.key = Key::Down; break;
         case 'C': event.key = Key::Right; break;
