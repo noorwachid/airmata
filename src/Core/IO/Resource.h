@@ -39,7 +39,7 @@ namespace IO
             uv_read_start(
                 this->template GetContext<StreamContext>(),
 
-                [](ResourceContext* stream, UintSize recomendedSize, Buffer* buf)
+                [](ResourceContext* stream, usize recomendedSize, Buffer* buf)
                 {
                     buf->len = 64; // Enough to contain common sequence
                     buf->base = new char[buf->len];
@@ -48,7 +48,7 @@ namespace IO
                         buf->base[i] = 0;
                 },
 
-                [](StreamContext* stream, IntSize result, const Buffer* buf)
+                [](StreamContext* stream, isize result, const Buffer* buf)
                 {
                     if (result < 0)
                     {

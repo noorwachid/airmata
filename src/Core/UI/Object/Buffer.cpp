@@ -17,12 +17,12 @@ namespace UI
 
     Buffer::Buffer(Context& newContext) : Object{newContext} 
     {
-        data.reserve(16);
-        data = {
+        lines.reserve(16);
+        lines = {
             "Lorem ipsum dolor sit amet, consectetur-adipiscing elit.",
-            "Nunc vestibulum tristique purus, mollis rhoncus elit.",
+            "Nunc vestibulum, tristique purus: mollis rhoncus elit.",
             "",
-            "Fusce varius urna tempus molestie suscipit.",
+            "Fusce varius urna tempus molestie... suscipit.",
             // "Mauris accumsan posuere felis.",
             // "A Liquam sed mattis elit, eu convallis lectus.",
             // "Nam sagittis sem id viverra hendrerit.",
@@ -77,42 +77,35 @@ namespace UI
                 switch (keyEvent.key)
                 {
                     case Key::Escape:
-                        if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
-                            context.mode = Mode::PrecicionMove;
-                        else
-                            context.mode = Mode::WideMove;
+                        context.mode = Mode::WideMove;
                         break;
 
                     case Key::H:
-                        JumpPreviousSentence();
-                        break;
-
-                    case Key::T:
-                        JumpPreviousParagraph();
-                        break;
-
-                    case Key::N:
-                        JumpNextParagraph();
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpPreviousWord();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpPreviousWordEnd();
                         break;
 
                     case Key::S:
-                        JumpNextSentence();
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpNextWord();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpNextWordEnd();
                         break;
 
                     case Key::M:
-                        JumpPreviousWord();
-                        break;
-
-                    case Key::W:
-                        JumpPreviousLine();
-                        break;
-
-                    case Key::V:
-                        JumpNextLine();
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpPreviousSentence();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpPreviousSentenceEnd();
                         break;
 
                     case Key::Z:
-                        JumpNextWord();
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpNextSentence();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpNextSentenceEnd();
                         break;
 
                     case Key::Return:
@@ -120,19 +113,19 @@ namespace UI
                         break;
 
                     case Key::Left:
-                        MoveCursorLeft();
+                        MoveLeft(1);
                         break;
 
                     case Key::Up:
-                        MoveCursorUp();
+                        MoveUp(1);
                         break;
 
                     case Key::Down:
-                        MoveCursorDown();
+                        MoveDown(1);
                         break;
 
                     case Key::Right:
-                        MoveCursorRight();
+                        MoveRight(1);
                         break;
 
                     default:
@@ -158,7 +151,7 @@ namespace UI
                         break;
 
                     default:
-                        Insert({ (char) keyEvent.codepoint, 0 });
+                        InsertAt({ (char) keyEvent.codepoint, 0 });
                         break;
                 }
             }
@@ -167,150 +160,20 @@ namespace UI
         Render();
     }
 
-    void Buffer::MoveCursorLeft()
-    {
-        if (cursor.x > 0)
-            --cursor.x;
-    }
-
-    void Buffer::MoveCursorRight()
-    {
-        if (cursor.x < GetBoundingX() - 1)
-            ++cursor.x;
-    }
-
-    void Buffer::MoveCursorUp()
-    {
-        if (cursor.y > 0)
-        {
-            --cursor.y;
-
-            if (cursor.x > GetBoundingX() - 1) 
-                MoveEOL();
-        }
-    }
-
-    void Buffer::MoveCursorDown()
-    {
-        if (cursor.y < GetBoundingY() - 1)
-        {
-            ++cursor.y;
-
-            if (cursor.x > GetBoundingX() - 1) 
-                MoveEOL();
-        }
-    }
-
-    void Buffer::JumpPreviousWord()
-    {
-        if (data.empty()) return;
-
-        if (cursor.x > 0)
-        {
-            if (IsWord(data[cursor.y][cursor.x]))
-            {
-                if (data[cursor.y][cursor.x - 1] == ' ')
-                {
-                    cursor.x -= 2;
-                }
-                else if (!IsWord(data[cursor.y][cursor.x - 1]))
-                {
-                    --cursor.x;
-                    return;
-                }
-
-                if (IsWord(data[cursor.y][cursor.x]))
-                {
-                    for (int i = cursor.x; i >= 0; --i)
-                    {
-                        if (!IsWord(data[cursor.y][i]))
-                        {
-                            cursor.x = i + 1;
-
-                            return;
-                        }
-                        else if (i == 0)
-                        {
-                            cursor.x = 0;
-
-                            return;
-                        }
-                    }
-                }
-                return;
-            }
-
-            if (IsWord(data[cursor.y][cursor.x - 1]))
-            {
-                --cursor.x;
-
-                for (int i = cursor.x; i >= 0; --i)
-                {
-                    if (!IsWord(data[cursor.y][i]))
-                    {
-                        cursor.x = i + 1;
-
-                        return;
-                    }
-                }
-                return;
-            }
-
-            --cursor.x;
-            return;
-        }
-
-    }
-
-    void Buffer::JumpNextWord()
-    {
-        if (data.empty()) return;
-
-        // Find next word
-        if (!IsWord(data[cursor.y][cursor.x])) 
-        {
-            for (int i = cursor.x; i < GetBoundingX(); ++i)
-            {
-                if (IsWord(data[cursor.y][i]))
-                {
-                    cursor.x = i;
-                    break;
-                }
-            }
-
-            return;
-        }
-
-        // Find non word
-        for (int i = cursor.x; i < GetBoundingX(); ++i)
-        {
-            if (!IsWord(data[cursor.y][i]))
-            {
-                cursor.x = i;
-                
-                // Next word
-                if (data[cursor.y][i] == ' ') 
-                    ++cursor.x;
-
-                return;
-            }
-        }
-    }
-
     void Buffer::Render() 
     { 
         String renderData;
 
-        for (int i = 0; i < data.size(); ++i) 
+        for (int i = 0; i < lines.size(); ++i) 
         {
             renderData += context.sequence.MoveCursor({ 0, i });
-            renderData += data[i] + String(GetSize().x - data[i].size(), ' ');
+            renderData += lines[i] + String(GetSize().x - lines[i].size(), ' ');
         }
 
         context.tty.Write(
             renderData +
             context.sequence.MoveCursor(cursor) + 
-            context.sequence.SetBG(0xFF0000) + Get() +
+            context.sequence.SetBG(0xFF0000) + GetCharacter(0) +
             context.sequence.ResetAttribute() +
             RenderStatusLine()
         );
@@ -328,59 +191,29 @@ namespace UI
             context.sequence.ResetAttribute();
     }
 
-    void Buffer::Insert(const String& string)
+    void Buffer::InsertAt(const String& string)
     {
-        if (data.empty())
+        if (lines.empty())
         {
-            return data.push_back(string);
+            return lines.push_back(string);
         }
 
-        String& line = data[cursor.y];
+        String& line = lines[cursor.y];
         line.insert(cursor.x, string);
-    }
-
-    int Buffer::GetBoundingX()
-    {
-        if (data.empty() || data[cursor.y].empty()) return 1;
-
-        return data[cursor.y].size();
-    }
-
-    int Buffer::GetBoundingY()
-    {
-        if (data.empty())
-            return 1;
-
-        return data.size();
-    }
-
-    bool Buffer::IsEOL() { return cursor.x == GetBoundingX() - 1; }
-
-    void Buffer::MoveEOL() 
-    { 
-        cursor.x = GetBoundingX() - 1; 
-    }
-
-    char Buffer::Get()
-    {
-        if (data.empty() || data[cursor.y].empty())
-            return ' ';
-
-        return data[cursor.y][cursor.x];
     }
 
     void Buffer::DeleteBefore() 
     {
-        if (data.empty()) return;
+        if (lines.empty()) return;
 
-        if (data[cursor.y].empty()) return;
+        if (lines[cursor.y].empty()) return;
 
-        data[cursor.y].erase(cursor.x -1, 1);
+        lines[cursor.y].erase(cursor.x -1, 1);
 
-        MoveCursorLeft();
+        MoveLeft(1);
     }
 
-    void Buffer::Delete() 
+    void Buffer::DeleteAt() 
     {
     }
 
@@ -388,21 +221,331 @@ namespace UI
     {
     }
 
-    void Buffer::JumpNextSentence() {}
-
-    void Buffer::JumpPreviousSentence() {}
-
-    void Buffer::JumpNextLine() 
+    int Buffer::GetBoundingX()
     {
-        if (cursor.y + 2 > GetBoundingY()) return;
+        return lines.empty() || lines[cursor.y].empty() 
+            ? 1
+            : lines[cursor.y].size();
+    }
 
-        ++cursor.y;
+    int Buffer::GetBoundingY()
+    {
+        return lines.empty()
+            ? 1
+            : lines.size();
+    }
 
-        for (UintSize i = 0; i < GetBoundingX(); ++i) 
+    char Buffer::GetCharacter(int cursorXOffset)
+    {
+        return lines[cursor.y][cursor.x + cursorXOffset];
+    }
+
+    String& Buffer::GetLine(int cursorYOffset)
+    {
+        return lines[cursor.y + cursorYOffset];
+    }
+
+    bool Buffer::IsEmpty()
+    {
+        return lines.empty() || lines[cursor.y].empty();
+    }
+
+    bool Buffer::IsWhitespace(char character) { return character == ' ' || character == '\t'; }
+
+    bool Buffer::IsWhitespace(const String& line) { 
+        return false;
+    }
+
+    bool Buffer::IsWord(char character)
+    {
+        return (character >= 'A' && character <= 'Z') || 
+               (character >= 'a' && character <= 'z') ||
+               (character >= '0' && character <= '9');
+    }
+
+    bool Buffer::IsSentenceEnding(char character)
+    {
+        return 
+            character == ',' ||
+            character == '.' ||
+            character == ';' ||
+            character == ':' ||
+            character == '!' ||
+            character == '?' ||
+            character == '=' ||
+            character == '(' ||
+            character == '{' ||
+            character == '<' ||
+            character == '[';
+    }
+
+    usize Buffer::CanMoveLeft(usize repeats)
+    {
+        return std::min<usize>(cursor.x, repeats);
+    }
+
+    usize Buffer::CanMoveRight(usize repeats)
+    {
+        return std::min<usize>(repeats, GetBoundingX() - cursor.x - 1);
+    }
+
+    usize Buffer::CanMoveUp(usize repeats)
+    {
+        return std::min<usize>(cursor.y, repeats);
+    }
+
+    usize Buffer::CanMoveDown(usize repeats)
+    {
+        return std::min<usize>(repeats, GetBoundingY() - cursor.y - 1);
+    }
+
+    void Buffer::MoveLeft(usize repeats)
+    {
+        cursor.x -= CanMoveLeft(repeats);
+    }
+
+    void Buffer::MoveRight(usize repeats)
+    {
+        cursor.x += CanMoveRight(repeats);
+    }
+
+    void Buffer::MoveUp(usize repeats)
+    {
+        cursor.y -= CanMoveUp(repeats);
+
+        if (cursor.x > GetBoundingX() - 1) 
+            JumpEndLine();
+    }
+
+    void Buffer::MoveDown(usize repeats)
+    {
+        cursor.y += CanMoveDown(repeats);
+
+        if (cursor.x > GetBoundingX() - 1) 
+            JumpEndLine();
+    }
+
+    void Buffer::JumpPreviousWord()
+    {
+        if (IsEmpty()) return;
+
+        // Beginning of word
+        if (!IsWord(GetCharacter(0)))
         {
-            if (!IsWhitespace(data[cursor.y][i]))
+            if (CanMoveLeft(1))
             {
-                cursor.x = i;
+                if (!IsWord(GetCharacter(-1)))
+                    return MoveLeft(1);
+                else
+                    MoveLeft(1);
+            }
+        }
+        else
+        {
+            if (CanMoveLeft(1))
+            {
+                if (IsWhitespace(GetCharacter(-1)))
+                    MoveLeft(2);
+                else if (!IsWord(GetCharacter(-1)))
+                    return MoveLeft(1);
+            }
+        }
+
+        for (usize i = 0; i < cursor.x; ++i)
+        {
+            if (!IsWord(GetCharacter(-i)))
+            {
+                MoveLeft(i);
+
+                if (!IsWord(GetCharacter(0)))
+                    if (CanMoveRight(1) && !IsWhitespace(GetCharacter(1)))
+                        MoveRight(1);
+
+                return;
+            }
+        }
+
+        JumpBeginningLine();
+    }
+
+    void Buffer::JumpPreviousWordEnd()
+    {
+        if (IsEmpty()) return;
+
+        // Beginning of word
+        if (!IsWord(GetCharacter(0)))
+        {
+            if (CanMoveLeft(1))
+            {
+                return MoveLeft(1);
+            }
+        }
+        else 
+        {
+            if (CanMoveLeft(1))
+            {
+                if (IsWhitespace(GetCharacter(-1)))
+                    return MoveLeft(2);
+                else if (!IsWord(GetCharacter(-1)))
+                    return MoveLeft(1);
+            }
+        }
+
+        for (usize i = 0; i < cursor.x; ++i)
+        {
+            if (!IsWord(GetCharacter(-i)))
+            {
+                MoveLeft(i);
+
+                if (!IsWord(GetCharacter(0)))
+                    if (CanMoveRight(1) && IsWhitespace(GetCharacter(0)))
+                        MoveLeft(1);
+
+                return;
+            }
+        }
+
+        JumpBeginningLine();
+    }
+
+    void Buffer::JumpNextWord()
+    {
+        if (IsEmpty()) return;
+
+        // End of word
+        if (CanMoveRight(1) && IsWhitespace(GetCharacter(1)))
+            return MoveRight(2);
+
+        if (!IsWord(GetCharacter(0)))
+            return MoveRight(1);
+
+        for (usize i = 0; i < GetBoundingX(); ++i)
+        {
+            if (!IsWord(GetCharacter(i)))
+            {
+                MoveRight(i);
+
+                if (IsWhitespace(GetCharacter(0)))
+                    MoveRight(1);
+
+                return;
+            }
+        }
+    }
+
+    void Buffer::JumpNextWordEnd()
+    {
+        if (IsEmpty()) return;
+
+        if (CanMoveRight(1) && IsWhitespace(GetCharacter(1)))
+            MoveRight(2);
+
+        if (!IsWord(GetCharacter(0)))
+        {
+            if (CanMoveRight(1))
+            {
+                if (!IsWord(GetCharacter(1)))
+                    return MoveRight(1);
+                else 
+                    MoveRight(1);
+            }
+        }
+        else 
+        {
+            if (CanMoveRight(1) && !IsWord(GetCharacter(1)))
+                return MoveRight(1);
+        }
+
+        // End of line
+        if (cursor.x == GetBoundingX() - 1)
+            return;
+
+        for (usize i = 0; i < GetBoundingX(); ++i)
+        {
+            if (!IsWord(GetCharacter(i)))
+            {
+                MoveRight(i);
+
+                if (!IsWord(GetCharacter(0)))
+                    MoveLeft(1);
+
+                return;
+            }
+        }
+    }
+
+    void Buffer::JumpPreviousSentence() 
+    {
+        if (IsEmpty()) return;
+
+        if (CanMoveLeft(1) && IsWhitespace(GetCharacter(-1)))
+            MoveLeft(2);
+
+        if (IsSentenceEnding(GetCharacter(0)))
+            MoveLeft(1);
+
+        for (usize i = 0; i < cursor.x; ++i)
+        {
+            if (IsSentenceEnding(GetCharacter(-i)))
+            {
+                return MoveLeft(i - 2);
+            }
+        }
+
+        JumpBeginningLine();
+    }
+
+    void Buffer::JumpPreviousSentenceEnd() 
+    {
+        if (IsEmpty()) return;
+
+        if (IsSentenceEnding(GetCharacter(0)))
+            MoveLeft(1);
+
+        for (usize i = 0; i < cursor.x; ++i)
+        {
+            if (IsSentenceEnding(GetCharacter(-i)))
+            {
+                MoveLeft(i);
+
+                return;
+            }
+        }
+
+        JumpBeginningLine();
+    }
+
+    void Buffer::JumpNextSentence() 
+    {
+        if (IsEmpty()) return;
+
+        for (usize i = 0; i < GetBoundingX(); ++i)
+        {
+            if (IsSentenceEnding(GetCharacter(i)))
+            {
+                MoveRight(i + 1);
+
+                if (!IsWord(GetCharacter(0)))
+                    MoveRight(1);
+
+                return;
+            }
+        }
+    }
+
+    void Buffer::JumpNextSentenceEnd() 
+    {
+        if (IsEmpty()) return;
+
+        if (CanMoveRight(1) && IsWhitespace(GetCharacter(1)))
+            MoveRight(2);
+
+        for (usize i = 0; i < GetBoundingX(); ++i)
+        {
+            if (IsSentenceEnding(GetCharacter(i)))
+            {
+                MoveRight(i);
+
                 return;
             }
         }
@@ -410,18 +553,29 @@ namespace UI
 
     void Buffer::JumpPreviousLine() 
     {
-        if (cursor.y - 1 < 0) return;
+    }
 
-        --cursor.y;
+    void Buffer::JumpNextLine() 
+    {
+    }
 
-        for (UintSize i = 0; i < GetBoundingX(); ++i) 
+    void Buffer::JumpBeginningLine()
+    {
+        cursor.x = 0;
+
+        for (usize i = 0; i < GetBoundingX(); ++i) 
         {
-            if (!IsWhitespace(data[cursor.y][i]))
+            if (!IsWhitespace(GetCharacter(i)))
             {
-                cursor.x = i;
-                return;
+                cursor.x = 0;
+                break;
             }
         }
+    }
+
+    void Buffer::JumpEndLine()
+    {
+        cursor.x = GetBoundingX() - 1;
     }
 
     void Buffer::JumpNextParagraph() {}

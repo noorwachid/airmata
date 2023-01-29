@@ -9,7 +9,7 @@
 class ArgumentSolver
 {
 public:
-    void AddOption(const String& key, UintSize consuming = 0);
+    void AddOption(const String& key, usize consuming = 0);
 
     void Solve(char** data, int dataSize);
 
@@ -22,13 +22,13 @@ public:
     void CopyArgument(const String& argument);
 
 private:
-    HashTable<String, UintSize> optionRules;
+    HashTable<String, usize> optionRules;
 
     char** data = nullptr;
-    UintSize dataSize = 0;
-    UintSize cursor = 0;
+    usize dataSize = 0;
+    usize cursor = 0;
     String activeKey;
-    UintSize activeConsuming = 0;
+    usize activeConsuming = 0;
 
 public:
     String program;

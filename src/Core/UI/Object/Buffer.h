@@ -15,59 +15,65 @@ namespace UI
 
         virtual void Render() override;
 
-        void Insert(const String& string);
+        String RenderStatusLine();
+
+        void InsertBefore(const String& string);
+        void InsertAt(const String& string);
+        void InsertAfter(const String& string);
 
         void DeleteBefore();
-
-        void Delete();
-
+        void DeleteAt();
         void DeleteAfter();
 
         int GetBoundingX();
-
         int GetBoundingY();
 
-        bool IsEOL();
+        inline char GetCharacter(int cursorXOffset);
+        String& GetLine(int cursorYOffset);
 
-        void MoveEOL();
+        bool IsEmpty();
 
-        char Get();
+        bool IsWhitespace(char character);
+        bool IsWhitespace(const String& line);
 
-        String RenderStatusLine();
+        bool IsWord(char character);
 
-        void MoveCursorLeft();
-        void MoveCursorRight();
-        void MoveCursorUp();
-        void MoveCursorDown();
+        bool IsSentenceEnding(char character);
+
+        usize CanMoveLeft(usize repeats);
+        usize CanMoveRight(usize repeats);
+        usize CanMoveUp(usize repeats);
+        usize CanMoveDown(usize repeats);
+
+        void MoveLeft(usize repeats);
+        void MoveRight(usize repeats);
+        void MoveUp(usize repeats);
+        void MoveDown(usize repeats);
+
+        void JumpPreviousWord();
+        void JumpPreviousWordEnd();
 
         void JumpNextWord();
-        void JumpPreviousWord();
+        void JumpNextWordEnd();
+
+        void JumpPreviousSentence();
+        void JumpPreviousSentenceEnd();
 
         void JumpNextSentence();
-        void JumpPreviousSentence();
+        void JumpNextSentenceEnd();
 
-        void JumpNextLine();
+        void JumpBeginningLine();
+        void JumpEndLine();
+
         void JumpPreviousLine();
+        void JumpNextLine();
 
         void JumpNextParagraph();
         void JumpPreviousParagraph();
 
-        bool IsWhitespace(char character)
-        {
-            return character == ' ' || character == '\t';
-        }
-
-        bool IsWord(char character)
-        {
-            return 
-                (character >= 'A' && character <= 'Z') ||
-                (character >= 'a' && character <= 'z') ||
-                (character >= '0' && character <= '9') 
-            ;
-        }
-
     public:
-        Array<String> data;
+        Array<String> lines;
+        String oob = " ";
 
         Vector2 cursor;
     };

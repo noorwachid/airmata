@@ -27,7 +27,7 @@ namespace IO
             }
         );
     }
-    void FileSystem::ReadFile(int fd, UintSize rpc, const ReadFileCallback& callback)
+    void FileSystem::ReadFile(int fd, usize rpc, const ReadFileCallback& callback)
     {
         struct Data
         {

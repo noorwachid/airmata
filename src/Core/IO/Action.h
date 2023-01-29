@@ -18,7 +18,7 @@ namespace IO
 
         void OpenFile(const String& path, const OpenFileCallback& callback = nullptr);
 
-        void ReadFile(int fd, UintSize rpc, const ReadFileCallback& callback);
+        void ReadFile(int fd, usize rpc, const ReadFileCallback& callback);
 
     private:
         LoopContext* loopContext = nullptr;

@@ -4,14 +4,14 @@
 #include <cstdint>
 #include <sys/types.h>
 
-using Int8 = int8_t;
-using Int16 = int16_t;
-using Int32 = int32_t;
-using Int64 = int64_t;
-using IntSize = ssize_t;
+using i8 = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
+using isize = ssize_t;
 
-using Uint8 = uint8_t;
-using Uint16 = uint16_t;
-using Uint32 = uint32_t;
-using Uint64 = uint64_t;
-using UintSize = size_t;
+using u8 = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+using usize = size_t;

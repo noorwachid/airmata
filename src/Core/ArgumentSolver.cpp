@@ -1,6 +1,6 @@
 #include "Core/ArgumentSolver.h"
 
-void ArgumentSolver::AddOption(const String& key, UintSize consuming) { optionRules[key] = consuming; }
+void ArgumentSolver::AddOption(const String& key, usize consuming) { optionRules[key] = consuming; }
 
 void ArgumentSolver::Solve(char** newData, int newDataSize)
 {
@@ -40,7 +40,7 @@ void ArgumentSolver::CopyOption(const String& argument)
 
     if (optionRules.count(key))
     {
-        UintSize consuming = optionRules[key];
+        usize consuming = optionRules[key];
 
         if (consuming == 0)
         {

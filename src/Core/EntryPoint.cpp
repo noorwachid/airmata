@@ -92,7 +92,7 @@ void EntryPoint::ParseInputKeyboardSequence(const String& sequence)
     event.codepoint = 0;
     event.modifierKey = ModifierKey::None;
 
-    UintSize cursor = 2;
+    usize cursor = 2;
 
     switch (sequence[cursor]) 
     {
@@ -181,13 +181,13 @@ void EntryPoint::ParseInputKeyboardSequence(const String& sequence)
 
 void EntryPoint::ParseInputMouseSequence(const String& sequence)
 {
-    UintSize cursor = 3;
+    usize cursor = 3;
     bool pressed = true;
 
     if (Utility::IsIntegerByte(sequence[cursor]))
     {
         int value = Utility::FindIntegerSubBytes(sequence, cursor);
-        UintSize strength = 1;
+        usize strength = 1;
         Vector2 position;
 
         if (sequence[cursor] == ';')
@@ -214,7 +214,7 @@ void EntryPoint::ParseInputMouseSequence(const String& sequence)
         }
 
 
-        for (UintSize i = cursor; i < sequence.size(); ++i) 
+        for (usize i = cursor; i < sequence.size(); ++i) 
             if (sequence[i] == '\x1B')
                 ++strength;
 
