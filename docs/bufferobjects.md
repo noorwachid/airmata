@@ -73,12 +73,13 @@ Quick [b]rown-fox. Jumps over the lazy dog.
 ```
 
 ## Word 
+With set of `a-z`, `A-Z`, or `0-9`.
 ```
 Quick [brown]-fox. Jumps over the lazy dog.
 ```
 
 ## Sentence
-Ends with `,`, `.`' `;`, `:`, `!`, `?`, `=`, `(`, `{`, `<`, `[`
+Ends with `,`, `.`, `;`, `:`, `!`, `?`, `=`, `(`, `{`, `<`, or `[`.
 
 ```
 [Quick brown-fox.] Jumps over the lazy dog.
@@ -96,8 +97,6 @@ class Person
 ```
 
 ## Inner Sentence
-Ends with `,`, `.`' `;`, `:`, `!`, `?`, `=`, `(`, `{`, `<`, `[`
-
 ```
 [Quick brown-fox]. Jumps over the lazy dog.
 ```
@@ -145,6 +144,13 @@ Tears have symbolic significance among humans.
 ## Number 
 ```
 Descent from the Cross, c. [1435] by Rogier van der Weyden, the tears of Mary of Clopas
+```
+```
+var a = [12]
+var b = [12.3]
+var c = [0xFFFFFF]
+var d = [0b1011]
+var e = [0o777]
 ```
 
 ## Quotes 
