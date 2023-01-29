@@ -95,6 +95,24 @@ class Person
 }
 ```
 
+## Inner Sentence
+Ends with `,`, `.`' `;`, `:`, `!`, `?`, `=`, `(`, `{`, `<`, `[`
+
+```
+[Quick brown-fox]. Jumps over the lazy dog.
+```
+
+``` 
+class Person
+{
+    [virtual void Move](int newAge, int newPostalCode) 
+    {
+        int age = newAge;
+        int postalCode = newPostalCode;
+    }
+}
+```
+
 ## Line
 ```
 [Quick brown-fox. Jumps over the lazy dog.]
