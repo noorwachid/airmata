@@ -1,26 +1,5 @@
 # Buffer Objects
 ## Selection Anchors
-### Begining ofObject : No Modifier
-```
-[v]oid say(string type) {
-    if (type == "cat") {
-        print("meow")
-    }
-
-    print("sup")
-}
-```
-
-### End of Object : Shift 
-```
-void say(string type) {
-    if (type == "cat") {
-        print("meow")
-    }
-
-    print("sup")
-[}]
-```
 
 ### Object
 ```
@@ -33,6 +12,28 @@ void say(string type) {
 }]
 ```
 
+### Begining of Object
+```
+[v]oid say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+}
+```
+
+### End of Object
+```
+void say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+[}]
+```
+
 ### Inner Object 
 ```
 void say(string type) {
@@ -41,6 +42,28 @@ void say(string type) {
     }
 
     print("sup")]
+}
+```
+
+### Begining of Inner Object
+```
+void say(string type) {
+    [i]f (type == "cat") {
+        print("meow")
+    }
+
+    print("sup")
+}
+```
+
+### End of Inner Object
+```
+void say(string type) {
+    if (type == "cat") {
+        print("meow")
+    }
+
+    print("sup"[)]
 }
 ```
 
@@ -55,8 +78,21 @@ Quick [brown]-fox. Jumps over the lazy dog.
 ```
 
 ## Sentence
+Ends with `,`, `.`' `;`, `:`, `!`, `?`, `=`, `(`, `{`, `<`, `[`
+
 ```
 [Quick brown-fox.] Jumps over the lazy dog.
+```
+
+``` 
+class Person
+{
+    [virtual void Move(]int newAge, int newPostalCode) 
+    {
+        int age = newAge;
+        int postalCode = newPostalCode;
+    }
+}
 ```
 
 ## Line
