@@ -4,12 +4,14 @@
 #include "Core/IO/Loop.h"
 #include "Core/IO/Resource.h"
 #include "Core/Integral.h"
+#include "Core/Mode.h"
+#include "Core/UI/InputSystem.h"
 #include "Core/UI/Object/Document.h"
 #include "Core/UI/Sequence.h"
 #include "Core/Utility/ByteChecker.h"
 #include "Core/Utility/EnumBitManipulator.h"
 
-class EntryPoint
+class Program : public EventSystem
 {
 public:
     void Enter();
@@ -20,15 +22,18 @@ public:
 
     void Exit();
 
-private:
-    void ParseInputRaw(const String& data);
+public:
+    bool terminating = false;
 
-    void ParseInputSequence(const String& data);
+    Mode mode = Mode::WideMove;
 
-    void ParseInputKeyboardSequence(const String& data);
+    // Order dependent constructors
 
-    void ParseInputMouseSequence(const String& data);
+    IO::Loop loop;
+    IO::TTY tty{loop, 0};
 
-    Context context;
-    UI::Document document{context};
+    UI::Sequence sequence = UI::Sequence::CreateFromEnv();
+
+    UI::Document document{*this};
+    UI::InputSystem input{*this};
 };

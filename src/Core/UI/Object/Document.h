@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Container/Array.h"
+#include "Core/Mode.h"
 #include "Core/IO/Action.h"
 #include "Core/UI/Object/Object.h"
 
@@ -9,7 +10,7 @@ namespace UI
     class Document : public Object
     {
     public:
-        Document(Context& newContext);
+        Document(Program& referenceProgram);
 
         virtual void On(Event& event) override;
 

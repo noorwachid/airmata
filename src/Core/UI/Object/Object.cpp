@@ -1,9 +1,10 @@
 #include "Core/UI/Object/Object.h"
+#include "Core/Program.h"
 
 namespace UI
 {
-    Object::Object(Context& newContext) : context{newContext} {
-        SetSize(newContext.tty.GetSize());
+    Object::Object(Program& referenceProgram) : program{referenceProgram} {
+        SetSize(program.tty.GetSize());
     }
 
     void Object::On(Event& event) {};

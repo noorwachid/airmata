@@ -1,21 +1,11 @@
-#include "Core/UI/Object/Document.h"
 #include "Core/Event/KeyEvent.h"
+#include "Core/Program.h"
 #include "Core/IO/Action.h"
+#include "Core/UI/Object/Document.h"
 
 namespace UI
 {
-    String ToString(Mode mode)
-    {
-        switch (mode) 
-        {
-            case Mode::WideMove: return "WideMove";
-            case Mode::PrecicionMove: return "PrecicionMove";
-            case Mode::Insert: return "Insert";
-            default: return "[Unknown]";
-        }
-    }
-
-    Document::Document(Context& newContext) : Object{newContext} 
+    Document::Document(Program& program) : Object{program} 
     {
         lines.reserve(16);
         lines = {
@@ -72,17 +62,17 @@ namespace UI
 
             if (keyEvent.key == Key::Backslash)
             {
-                context.terminating = true;
-                context.tty.StopReading();
+                program.terminating = true;
+                program.tty.StopReading();
                 return;
             }
 
-            if (context.mode == Mode::WideMove) 
+            if (program.mode == Mode::WideMove) 
             {
                 switch (keyEvent.key)
                 {
                     case Key::Escape:
-                        context.mode = Mode::WideMove;
+                        program.mode = Mode::WideMove;
                         break;
 
                     case Key::H:
@@ -145,7 +135,7 @@ namespace UI
                         if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             MoveRight(1);
                             
-                        context.mode = Mode::Insert;
+                        program.mode = Mode::Insert;
                         break;
 
                     case Key::Left:
@@ -174,9 +164,9 @@ namespace UI
                 {
                     case Key::Escape:
                         if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
-                            context.mode = Mode::PrecicionMove;
+                            program.mode = Mode::PrecicionMove;
                         else
-                            context.mode = Mode::WideMove;
+                            program.mode = Mode::WideMove;
 
                         if (cursor.x > 0)
                             --cursor.x;
@@ -221,38 +211,38 @@ namespace UI
         {
             String lineRepresentation = std::to_string(i + 1);
 
-            renderData += context.sequence.MoveCursor({ 0, i });
+            renderData += program.sequence.MoveCursor({ 0, i });
 
             if (cursor.y == i) 
-                renderData += context.sequence.SetBG(0x212121);
+                renderData += program.sequence.SetBG(0x212121);
 
             renderData += ' ' + String(maxLines.size() - lineRepresentation.size(), ' ') + lineRepresentation + ' ' + lines[i] + String(GetSize().x - lines[i].size() - maxLines.size() - 2, ' ');
 
             if (cursor.y == i) 
-                renderData += context.sequence.ResetAttribute();
+                renderData += program.sequence.ResetAttribute();
         }
 
-        String cursorStyle = context.mode == Mode::Insert ? "\x1b[\x35 q" : "\x1b[\x31 q";
+        String cursorStyle = program.mode == Mode::Insert ? "\x1b[\x35 q" : "\x1b[\x31 q";
 
-        context.tty.Write(
+        program.tty.Write(
             renderData +
             RenderStatusBar() +
-            context.sequence.MoveCursor({ cursor.x + 2 + (int) maxLines.size(), cursor.y }) + 
+            program.sequence.MoveCursor({ cursor.x + 2 + (int) maxLines.size(), cursor.y }) + 
             cursorStyle +
-            context.sequence.ResetAttribute()
+            program.sequence.ResetAttribute()
         );
     }
 
     String Document::RenderStatusBar()
     {
-        String modeString = " " + ToString(context.mode);
+        String modeString = " " + ToString(program.mode);
         String cursorString = cursor.ToString() + " ";
 
         return 
-            context.sequence.MoveCursor({ 0, GetSize().y - 1}) + 
-            context.sequence.SetBG(0x5500AA) +
+            program.sequence.MoveCursor({ 0, GetSize().y - 1}) + 
+            program.sequence.SetBG(0x5500AA) +
             modeString + String(GetSize().x - (modeString.size() + cursorString.size()), ' ') + cursorString +
-            context.sequence.ResetAttribute();
+            program.sequence.ResetAttribute();
     }
 
     void Document::InsertAt(const String& string)

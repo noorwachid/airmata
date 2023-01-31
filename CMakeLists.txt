@@ -19,6 +19,7 @@ add_executable(AirMata
     src/Core/Event/KeyEvent.cpp
     src/Core/Event/MouseEvent.h
     src/Core/Event/MouseEvent.cpp
+    src/Core/Event/EventSystem.h
 
     src/Core/Utility/ByteChecker.h
     src/Core/Utility/ByteChecker.cpp
@@ -30,8 +31,12 @@ add_executable(AirMata
     src/Core/UI/Object/Object.cpp
     src/Core/UI/Object/Document.h
     src/Core/UI/Object/Document.cpp
-    src/Core/UI/Object/StatusBar.h
-    src/Core/UI/Object/StatusBar.cpp
+
+    src/Core/UI/Tree.h
+    src/Core/UI/Tree.cpp
+    src/Core/UI/Sequence.h
+    src/Core/UI/InputSystem.h
+    src/Core/UI/InputSystem.cpp
 
     src/Core/Container/Array.h
     src/Core/Container/String.h
@@ -43,10 +48,11 @@ add_executable(AirMata
     src/Core/ArgumentSolver.h
     src/Core/ArgumentSolver.cpp
 
-    src/Core/Context.h
+    src/Core/Mode.h
+    src/Core/Mode.cpp
 
-    src/Core/EntryPoint.h
-    src/Core/EntryPoint.cpp
+    src/Core/Program.h
+    src/Core/Program.cpp
 
 	src/main.cpp
 )

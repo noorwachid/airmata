@@ -1,12 +1,12 @@
 #include "Core/ArgumentSolver.h"
-#include "Core/EntryPoint.h"
+#include "Core/Program.h"
 #include <iostream>
 
 int main(int argc, char** argv) 
 {
-    EntryPoint entryPoint;
+    Program program;
 
-    entryPoint.Run();
+    program.Run();
 
     return 0;
 }

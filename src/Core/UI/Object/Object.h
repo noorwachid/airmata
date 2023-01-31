@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Core/Context.h"
+#include "Core/Container/Vector.h"
 #include "Core/Event/Event.h"
+
+class Program;
 
 namespace UI
 {
     class Object
     {
     public:
-        Object(Context& newContext);
+        Object(Program& referenceProgram);
 
         virtual void On(Event& event);
 
@@ -21,7 +23,7 @@ namespace UI
         void SetSize(const Vector2& newSize);
 
     protected:
-        Context& context;
+        Program& program;
 
     private:
         Vector2 position;
