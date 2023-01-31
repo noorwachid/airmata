@@ -31,6 +31,8 @@ namespace UI
         inline char GetCharacter(int cursorXOffset);
         String& GetLine(int cursorYOffset);
 
+        int GetBeginnigLineX();
+
         bool IsEmpty();
 
         bool IsWhitespace(char character);
@@ -39,6 +41,8 @@ namespace UI
         bool IsWord(char character);
 
         bool IsSentenceEnding(char character);
+
+        bool IsBeginningLine();
 
         usize CanMoveLeft(usize repeats);
         usize CanMoveRight(usize repeats);
@@ -66,7 +70,10 @@ namespace UI
         void JumpEndLine();
 
         void JumpPreviousLine();
+        void JumpPreviousLineEnd();
+
         void JumpNextLine();
+        void JumpNextLineEnd();
 
         void JumpNextParagraph();
         void JumpPreviousParagraph();

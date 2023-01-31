@@ -76,8 +76,8 @@ namespace IO
             };
 
             Data* data = new Data;
-            data->buffer.base = new char[buffer.size()];
             data->buffer.len = buffer.size();
+            data->buffer.base = new char[buffer.size()];
             data->callback = callback;
 
             uv_write_t* writeRequest = new uv_write_t;
@@ -94,7 +94,7 @@ namespace IO
                     if (data->callback)
                         data->callback(status);
 
-                    delete data->buffer.base;
+                    delete[] data->buffer.base;
                     delete data;
                     delete writeRequest;
                 }

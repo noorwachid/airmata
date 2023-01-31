@@ -23,29 +23,30 @@ namespace UI
             "Nunc vestibulum, tristique purus: mollis rhoncus elit.",
             "",
             "Fusce varius urna tempus molestie... suscipit.",
-            // "Mauris accumsan posuere felis.",
-            // "A Liquam sed mattis elit, eu convallis lectus.",
-            // "Nam sagittis sem id viverra hendrerit.",
-            // "Suspendisse hendrerit at risus pharetra aliquam.",
-            // "Donec porta consectetur pellentesque.",
-            // "Aliquam sed nisi quis ipsum pellentesque fermentum.",
-            // "Duis sit amet condimentum arcu. Nulla at volutpat orci.",
-            // "",
-            // "Ut fermentum dui libero, non vestibulum urna egestas nec.",
-            // "Cras sit amet commodo ex. Sed et condimentum nisi, a egestas eros.",
-            // "Etiam vel est enim.",
+            "Mauris accumsan posuere felis.",
+            "    A Liquam sed mattis elit, eu convallis lectus.",
+            "    Nam sagittis sem id viverra hendrerit.",
+            "    Suspendisse hendrerit at risus pharetra aliquam.",
+            "Donec porta consectetur pellentesque.",
+            "Aliquam sed nisi quis ipsum pellentesque fermentum.",
+            "Duis sit amet condimentum arcu. Nulla at volutpat orci.",
+            "",
+            "    ",
+            "Ut fermentum dui libero, non vestibulum urna egestas nec.",
+            "Cras sit amet commodo ex. Sed et condimentum nisi, a egestas eros.",
+            "Etiam vel est enim.",
             // "Aliquam dapibus, nulla et pretium interdum, ante lectus rhoncus est, eget dapibus odio quam ut ligula. Mauris pellentesque, ipsum vitae tristique finibus, mi justo porttitor justo, sed sagittis elit magna faucibus dui. Nunc tincidunt sapien id eleifend sagittis.",
-            // ".",
-            // "Nulla semper iaculis velit, eget finibus sem fermentum quis.",
-            // "Phasellus ac finibus justo.",
-            // "Integer commodo ligula sed tortor scelerisque, in dignissim nibh posuere.",
-            // "In ac suscipit lacus, vitae malesuada risus.",
-            // "Nunc porttitor laoreet nulla, vel pretium nulla dictum nec.",
-            // "Nunc ut est sit amet nisl pellentesque commodo.",
-            // ".",
-            // "Aenean id sapien ac turpis scelerisque vehicula at sed sem.",
-            // "Cras vestibulum pulvinar scelerisque.",
-            // "Pellentesque sollicitudin quam nulla, ac malesuada lorem condimentum vitae.",
+            "",
+            "Nulla semper iaculis velit, eget finibus sem fermentum quis.",
+            "Phasellus ac finibus justo.",
+            "Integer commodo ligula sed tortor scelerisque, in dignissim nibh posuere.",
+            "In ac suscipit lacus, vitae malesuada risus.",
+            "Nunc porttitor laoreet nulla, vel pretium nulla dictum nec.",
+            "Nunc ut est sit amet nisl pellentesque commodo.",
+            "",
+            "Aenean id sapien ac turpis scelerisque vehicula at sed sem.",
+            "Cras vestibulum pulvinar scelerisque.",
+            "Pellentesque sollicitudin quam nulla, ac malesuada lorem condimentum vitae.",
             // "Mauris vitae purus nec dui fringilla pharetra ac in elit.",
             // "Mauris sit amet odio neque.",
             // "Nullam sit amet massa feugiat, mattis tortor non, fermentum urna.",
@@ -70,7 +71,11 @@ namespace UI
             KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
 
             if (keyEvent.key == Key::Backslash)
-                return context.tty.StopReading();
+            {
+                context.terminating = true;
+                context.tty.StopReading();
+                return;
+            }
 
             if (context.mode == Mode::WideMove) 
             {
@@ -85,6 +90,20 @@ namespace UI
                             JumpPreviousWord();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousWordEnd();
+                        break;
+
+                    case Key::T:
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpPreviousLine();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpPreviousLineEnd();
+                        break;
+
+                    case Key::N:
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpNextLine();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpNextLineEnd();
                         break;
 
                     case Key::S:
@@ -109,6 +128,9 @@ namespace UI
                         break;
 
                     case Key::Return:
+                        if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            MoveRight(1);
+                            
                         context.mode = Mode::Insert;
                         break;
 
@@ -150,32 +172,53 @@ namespace UI
                         DeleteBefore();
                         break;
 
+                    case Key::Left:
+                        MoveLeft(1);
+                        break;
+
+                    case Key::Up:
+                        MoveUp(1);
+                        break;
+
+                    case Key::Down:
+                        MoveDown(1);
+                        break;
+
+                    case Key::Right:
+                        MoveRight(1);
+                        break;
+
                     default:
-                        InsertAt({ (char) keyEvent.codepoint, 0 });
+                        if (keyEvent.codepoint >= 32)
+                            InsertAt({ (char) keyEvent.codepoint, 0 });
                         break;
                 }
             }
         }
-
-        Render();
     }
 
     void Buffer::Render() 
     { 
         String renderData;
 
+        String maxLines = std::to_string(lines.size());
+
         for (int i = 0; i < lines.size(); ++i) 
         {
+            String lineRepresentation = std::to_string(i + 1);
+
             renderData += context.sequence.MoveCursor({ 0, i });
-            renderData += lines[i] + String(GetSize().x - lines[i].size(), ' ');
+            renderData += ' ' + String(maxLines.size() - lineRepresentation.size(), ' ') + lineRepresentation + ' ' + lines[i] + String(GetSize().x - lines[i].size() - maxLines.size() - 2, ' ');
         }
+
+        String cursorStyle = context.mode == Mode::Insert ? "\x1b[\x35 q" : "\x1b[\x31 q";
 
         context.tty.Write(
             renderData +
-            context.sequence.MoveCursor(cursor) + 
-            context.sequence.SetBG(0xFF0000) + GetCharacter(0) +
-            context.sequence.ResetAttribute() +
-            RenderStatusLine()
+            RenderStatusLine() +
+            context.sequence.MoveCursor({ cursor.x + 2 + (int) maxLines.size(), cursor.y }) + 
+            cursorStyle +
+            context.sequence.ResetAttribute()
         );
     }
 
@@ -245,6 +288,19 @@ namespace UI
         return lines[cursor.y + cursorYOffset];
     }
 
+    int Buffer::GetBeginnigLineX()
+    {
+        for (usize i = 0; i < GetBoundingX(); ++i) 
+        {
+            if (!IsWhitespace(GetCharacter(i)))
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
     bool Buffer::IsEmpty()
     {
         return lines.empty() || lines[cursor.y].empty();
@@ -252,8 +308,13 @@ namespace UI
 
     bool Buffer::IsWhitespace(char character) { return character == ' ' || character == '\t'; }
 
-    bool Buffer::IsWhitespace(const String& line) { 
-        return false;
+    bool Buffer::IsWhitespace(const String& line) 
+    { 
+        for (char character: line) 
+            if (!IsWhitespace(character))
+                return false;
+
+        return true;
     }
 
     bool Buffer::IsWord(char character)
@@ -277,6 +338,24 @@ namespace UI
             character == '{' ||
             character == '<' ||
             character == '[';
+    }
+
+    bool Buffer::IsBeginningLine() 
+    {
+        if (cursor.x == 0) return true;
+
+        int x = 0;
+
+        for (int i = 0; i < GetBoundingX(); ++i) 
+        {
+            if (!IsWhitespace(GetLine(0)[i])) 
+            {
+                x = i;
+                break;
+            }
+        }
+
+        return cursor.x == x;
     }
 
     usize Buffer::CanMoveLeft(usize repeats)
@@ -553,11 +632,65 @@ namespace UI
 
     void Buffer::JumpPreviousLine() 
     {
+        if (IsEmpty()) return;
+
+        if (!IsBeginningLine()) return JumpBeginningLine();
+
+        if (!CanMoveUp(1)) return;
+
+        --cursor.y;
+
+        for (int i = 0; i < GetBoundingY() && IsWhitespace(GetLine(0)); ++i)
+            --cursor.y;
+
+        JumpBeginningLine();
+    }
+
+    void Buffer::JumpPreviousLineEnd() 
+    {
+        if (IsEmpty()) return;
+
+        if (!CanMoveUp(1)) return;
+
+        --cursor.y;
+
+        for (int i = 0; i < GetBoundingY() && IsWhitespace(GetLine(0)); ++i)
+            --cursor.y;
+
+        JumpEndLine();
     }
 
     void Buffer::JumpNextLine() 
     {
+        if (IsEmpty()) return;
+
+        if (!CanMoveDown(1)) return;
+
+        ++cursor.y;
+
+        for (int i = 0; i < GetBoundingY() && IsWhitespace(GetLine(0)); ++i)
+            ++cursor.y;
+
+        JumpBeginningLine();
     }
+
+    void Buffer::JumpNextLineEnd() 
+    {
+        if (IsEmpty()) return;
+
+        if (cursor.x != GetBoundingX() - 1) return JumpEndLine();
+
+        if (!CanMoveDown(1)) return;
+
+        ++cursor.y;
+
+        for (int i = 0; i < GetBoundingY() && IsWhitespace(GetLine(0)); ++i)
+            ++cursor.y;
+
+        JumpEndLine();
+    }
+
+
 
     void Buffer::JumpBeginningLine()
     {
@@ -567,7 +700,7 @@ namespace UI
         {
             if (!IsWhitespace(GetCharacter(i)))
             {
-                cursor.x = 0;
+                cursor.x = i;
                 break;
             }
         }

@@ -1,19 +1,31 @@
 #include "Core/EntryPoint.h"
 #include "Core/Event/MouseEvent.h"
+#include <iostream>
 
 void EntryPoint::Run()
 {
-    Enter();
+    try 
+    {
+        Enter();
 
-    context.loop.Run();
+        context.loop.Run();
 
-    Exit();
+        Exit();
+    } 
+    catch (const std::exception& exception)
+    {
+        std::cout << exception.what() << "\n";
+    }
 }
 
-void EntryPoint::On(Event& event) { 
+void EntryPoint::On(Event& event) 
+{
     buffer.On(event); 
 
-    // context.tty.Write(event.ToString() + "\n");
+    if (context.terminating) 
+        return;
+
+    buffer.Render();
 }
 
 void EntryPoint::Enter()
@@ -23,7 +35,6 @@ void EntryPoint::Enter()
     context.tty.Write(
         context.sequence.Get(UI::SequenceString::EnterCAMode) + 
         context.sequence.Get(UI::SequenceString::ClearScreen) +
-        context.sequence.Get(UI::SequenceString::CursorInvisible) + 
         context.sequence.EnableKeyboard() +
         context.sequence.EnableMouse() 
     );
@@ -54,7 +65,6 @@ void EntryPoint::Exit()
         context.sequence.DisableMouse() +
         context.sequence.DisableKeyboard() +
         context.sequence.Get(UI::SequenceString::ClearScreen) +
-        context.sequence.Get(UI::SequenceString::CursorVisible) + 
         context.sequence.Get(UI::SequenceString::ExitCAMode)
     );
 

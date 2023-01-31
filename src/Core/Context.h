@@ -19,4 +19,6 @@ struct Context
     IO::TTY tty{loop, 0};
 
     UI::Sequence sequence = UI::Sequence::CreateFromEnv();
+
+    bool terminating = false;
 };
