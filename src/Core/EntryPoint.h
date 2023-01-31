@@ -4,7 +4,7 @@
 #include "Core/IO/Loop.h"
 #include "Core/IO/Resource.h"
 #include "Core/Integer.h"
-#include "Core/UI/Object/Buffer.h"
+#include "Core/UI/Object/Document.h"
 #include "Core/UI/Sequence.h"
 #include "Core/Utility/ByteChecker.h"
 #include "Core/Utility/EnumBitManipulator.h"
@@ -30,5 +30,5 @@ private:
     void ParseInputMouseSequence(const String& data);
 
     Context context;
-    UI::Buffer buffer{context};
+    UI::Document document{context};
 };

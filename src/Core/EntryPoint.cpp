@@ -20,12 +20,12 @@ void EntryPoint::Run()
 
 void EntryPoint::On(Event& event) 
 {
-    buffer.On(event); 
+    document.On(event); 
 
     if (context.terminating) 
         return;
 
-    buffer.Render();
+    document.Render();
 }
 
 void EntryPoint::Enter()

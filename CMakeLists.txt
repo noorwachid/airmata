@@ -28,8 +28,8 @@ add_executable(AirMata
 
     src/Core/UI/Object/Object.h
     src/Core/UI/Object/Object.cpp
-    src/Core/UI/Object/Buffer.h
-    src/Core/UI/Object/Buffer.cpp
+    src/Core/UI/Object/Document.h
+    src/Core/UI/Object/Document.cpp
     src/Core/UI/Object/StatusBar.h
     src/Core/UI/Object/StatusBar.cpp
 

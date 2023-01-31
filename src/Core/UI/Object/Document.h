@@ -6,16 +6,16 @@
 
 namespace UI
 {
-    class Buffer : public Object
+    class Document : public Object
     {
     public:
-        Buffer(Context& newContext);
+        Document(Context& newContext);
 
         virtual void On(Event& event) override;
 
         virtual void Render() override;
 
-        String RenderStatusLine();
+        String RenderStatusBar();
 
         void InsertBefore(const String& string);
         void InsertAt(const String& string);
@@ -75,8 +75,14 @@ namespace UI
         void JumpNextLine();
         void JumpNextLineEnd();
 
-        void JumpNextParagraph();
         void JumpPreviousParagraph();
+        void JumpPreviousParagraphEnd();
+
+        void JumpNextParagraph();
+        void JumpNextParagraphEnd();
+
+        void JumpBeginingDocument();
+        void JumpEndDocument();
 
     public:
         Array<String> lines;

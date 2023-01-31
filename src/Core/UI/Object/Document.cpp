@@ -1,4 +1,4 @@
-#include "Core/UI/Object/Buffer.h"
+#include "Core/UI/Object/Document.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/IO/Action.h"
 
@@ -15,7 +15,7 @@ namespace UI
         }
     }
 
-    Buffer::Buffer(Context& newContext) : Object{newContext} 
+    Document::Document(Context& newContext) : Object{newContext} 
     {
         lines.reserve(16);
         lines = {
@@ -64,7 +64,7 @@ namespace UI
         };
     }
 
-    void UI::Buffer::On(Event& event)
+    void UI::Document::On(Event& event)
     {
         if (event.name == "KeyPress")
         {
@@ -118,6 +118,20 @@ namespace UI
                             JumpPreviousSentence();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousSentenceEnd();
+                        break;
+
+                    case Key::W:
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpPreviousParagraph();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpPreviousParagraphEnd();
+                        break;
+
+                    case Key::V:
+                        if (keyEvent.modifierKey == ModifierKey::None)
+                            JumpNextParagraph();
+                        else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
+                            JumpNextParagraphEnd();
                         break;
 
                     case Key::Z:
@@ -197,7 +211,7 @@ namespace UI
         }
     }
 
-    void Buffer::Render() 
+    void Document::Render() 
     { 
         String renderData;
 
@@ -208,21 +222,28 @@ namespace UI
             String lineRepresentation = std::to_string(i + 1);
 
             renderData += context.sequence.MoveCursor({ 0, i });
+
+            if (cursor.y == i) 
+                renderData += context.sequence.SetBG(0x212121);
+
             renderData += ' ' + String(maxLines.size() - lineRepresentation.size(), ' ') + lineRepresentation + ' ' + lines[i] + String(GetSize().x - lines[i].size() - maxLines.size() - 2, ' ');
+
+            if (cursor.y == i) 
+                renderData += context.sequence.ResetAttribute();
         }
 
         String cursorStyle = context.mode == Mode::Insert ? "\x1b[\x35 q" : "\x1b[\x31 q";
 
         context.tty.Write(
             renderData +
-            RenderStatusLine() +
+            RenderStatusBar() +
             context.sequence.MoveCursor({ cursor.x + 2 + (int) maxLines.size(), cursor.y }) + 
             cursorStyle +
             context.sequence.ResetAttribute()
         );
     }
 
-    String Buffer::RenderStatusLine()
+    String Document::RenderStatusBar()
     {
         String modeString = " " + ToString(context.mode);
         String cursorString = cursor.ToString() + " ";
@@ -234,7 +255,7 @@ namespace UI
             context.sequence.ResetAttribute();
     }
 
-    void Buffer::InsertAt(const String& string)
+    void Document::InsertAt(const String& string)
     {
         if (lines.empty())
         {
@@ -245,7 +266,7 @@ namespace UI
         line.insert(cursor.x, string);
     }
 
-    void Buffer::DeleteBefore() 
+    void Document::DeleteBefore() 
     {
         if (lines.empty()) return;
 
@@ -256,39 +277,39 @@ namespace UI
         MoveLeft(1);
     }
 
-    void Buffer::DeleteAt() 
+    void Document::DeleteAt() 
     {
     }
 
-    void Buffer::DeleteAfter() 
+    void Document::DeleteAfter() 
     {
     }
 
-    int Buffer::GetBoundingX()
+    int Document::GetBoundingX()
     {
         return lines.empty() || lines[cursor.y].empty() 
             ? 1
             : lines[cursor.y].size();
     }
 
-    int Buffer::GetBoundingY()
+    int Document::GetBoundingY()
     {
         return lines.empty()
             ? 1
             : lines.size();
     }
 
-    char Buffer::GetCharacter(int cursorXOffset)
+    char Document::GetCharacter(int cursorXOffset)
     {
         return lines[cursor.y][cursor.x + cursorXOffset];
     }
 
-    String& Buffer::GetLine(int cursorYOffset)
+    String& Document::GetLine(int cursorYOffset)
     {
         return lines[cursor.y + cursorYOffset];
     }
 
-    int Buffer::GetBeginnigLineX()
+    int Document::GetBeginnigLineX()
     {
         for (usize i = 0; i < GetBoundingX(); ++i) 
         {
@@ -301,14 +322,14 @@ namespace UI
         return 0;
     }
 
-    bool Buffer::IsEmpty()
+    bool Document::IsEmpty()
     {
         return lines.empty() || lines[cursor.y].empty();
     }
 
-    bool Buffer::IsWhitespace(char character) { return character == ' ' || character == '\t'; }
+    bool Document::IsWhitespace(char character) { return character == ' ' || character == '\t'; }
 
-    bool Buffer::IsWhitespace(const String& line) 
+    bool Document::IsWhitespace(const String& line) 
     { 
         for (char character: line) 
             if (!IsWhitespace(character))
@@ -317,14 +338,14 @@ namespace UI
         return true;
     }
 
-    bool Buffer::IsWord(char character)
+    bool Document::IsWord(char character)
     {
         return (character >= 'A' && character <= 'Z') || 
                (character >= 'a' && character <= 'z') ||
                (character >= '0' && character <= '9');
     }
 
-    bool Buffer::IsSentenceEnding(char character)
+    bool Document::IsSentenceEnding(char character)
     {
         return 
             character == ',' ||
@@ -340,7 +361,7 @@ namespace UI
             character == '[';
     }
 
-    bool Buffer::IsBeginningLine() 
+    bool Document::IsBeginningLine() 
     {
         if (cursor.x == 0) return true;
 
@@ -358,37 +379,37 @@ namespace UI
         return cursor.x == x;
     }
 
-    usize Buffer::CanMoveLeft(usize repeats)
+    usize Document::CanMoveLeft(usize repeats)
     {
         return std::min<usize>(cursor.x, repeats);
     }
 
-    usize Buffer::CanMoveRight(usize repeats)
+    usize Document::CanMoveRight(usize repeats)
     {
         return std::min<usize>(repeats, GetBoundingX() - cursor.x - 1);
     }
 
-    usize Buffer::CanMoveUp(usize repeats)
+    usize Document::CanMoveUp(usize repeats)
     {
         return std::min<usize>(cursor.y, repeats);
     }
 
-    usize Buffer::CanMoveDown(usize repeats)
+    usize Document::CanMoveDown(usize repeats)
     {
         return std::min<usize>(repeats, GetBoundingY() - cursor.y - 1);
     }
 
-    void Buffer::MoveLeft(usize repeats)
+    void Document::MoveLeft(usize repeats)
     {
         cursor.x -= CanMoveLeft(repeats);
     }
 
-    void Buffer::MoveRight(usize repeats)
+    void Document::MoveRight(usize repeats)
     {
         cursor.x += CanMoveRight(repeats);
     }
 
-    void Buffer::MoveUp(usize repeats)
+    void Document::MoveUp(usize repeats)
     {
         cursor.y -= CanMoveUp(repeats);
 
@@ -396,7 +417,7 @@ namespace UI
             JumpEndLine();
     }
 
-    void Buffer::MoveDown(usize repeats)
+    void Document::MoveDown(usize repeats)
     {
         cursor.y += CanMoveDown(repeats);
 
@@ -404,7 +425,7 @@ namespace UI
             JumpEndLine();
     }
 
-    void Buffer::JumpPreviousWord()
+    void Document::JumpPreviousWord()
     {
         if (IsEmpty()) return;
 
@@ -447,7 +468,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpPreviousWordEnd()
+    void Document::JumpPreviousWordEnd()
     {
         if (IsEmpty()) return;
 
@@ -487,7 +508,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpNextWord()
+    void Document::JumpNextWord()
     {
         if (IsEmpty()) return;
 
@@ -512,7 +533,7 @@ namespace UI
         }
     }
 
-    void Buffer::JumpNextWordEnd()
+    void Document::JumpNextWordEnd()
     {
         if (IsEmpty()) return;
 
@@ -553,7 +574,7 @@ namespace UI
         }
     }
 
-    void Buffer::JumpPreviousSentence() 
+    void Document::JumpPreviousSentence() 
     {
         if (IsEmpty()) return;
 
@@ -574,7 +595,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpPreviousSentenceEnd() 
+    void Document::JumpPreviousSentenceEnd() 
     {
         if (IsEmpty()) return;
 
@@ -594,7 +615,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpNextSentence() 
+    void Document::JumpNextSentence() 
     {
         if (IsEmpty()) return;
 
@@ -612,7 +633,7 @@ namespace UI
         }
     }
 
-    void Buffer::JumpNextSentenceEnd() 
+    void Document::JumpNextSentenceEnd() 
     {
         if (IsEmpty()) return;
 
@@ -630,7 +651,7 @@ namespace UI
         }
     }
 
-    void Buffer::JumpPreviousLine() 
+    void Document::JumpPreviousLine() 
     {
         if (IsEmpty()) return;
 
@@ -646,7 +667,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpPreviousLineEnd() 
+    void Document::JumpPreviousLineEnd() 
     {
         if (IsEmpty()) return;
 
@@ -660,7 +681,7 @@ namespace UI
         JumpEndLine();
     }
 
-    void Buffer::JumpNextLine() 
+    void Document::JumpNextLine() 
     {
         if (IsEmpty()) return;
 
@@ -674,7 +695,7 @@ namespace UI
         JumpBeginningLine();
     }
 
-    void Buffer::JumpNextLineEnd() 
+    void Document::JumpNextLineEnd() 
     {
         if (IsEmpty()) return;
 
@@ -692,7 +713,7 @@ namespace UI
 
 
 
-    void Buffer::JumpBeginningLine()
+    void Document::JumpBeginningLine()
     {
         cursor.x = 0;
 
@@ -706,12 +727,142 @@ namespace UI
         }
     }
 
-    void Buffer::JumpEndLine()
+    void Document::JumpEndLine()
     {
         cursor.x = GetBoundingX() - 1;
     }
 
-    void Buffer::JumpNextParagraph() {}
+    void Document::JumpPreviousParagraph() 
+    {
+        if (IsWhitespace(GetLine(-1))) 
+        {
+            for (usize i = 0; i < cursor.y; ++i) 
+            {
+                if (IsWhitespace(GetLine(-i))) 
+                {
+                    for (usize j = i; j < cursor.y; ++j) 
+                    {
+                        if (!IsWhitespace(GetLine(-j)))
+                        {
+                            for (usize k = j; k < cursor.y; ++k) 
+                            {
+                                if (IsWhitespace(GetLine(-k))) 
+                                {
+                                    MoveUp(k - 1);
+                                    JumpBeginningLine();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-    void Buffer::JumpPreviousParagraph() {}
+            JumpBeginingDocument();
+            return;
+        }
+
+        for (usize i = 0; i < cursor.y; ++i) 
+        {
+            if (IsWhitespace(GetLine(-i))) 
+            {
+                MoveUp(i - 1);
+                JumpBeginningLine();
+                return;
+            }
+        }
+    }
+
+    void Document::JumpPreviousParagraphEnd() 
+    {
+        for (usize i = 0; i < cursor.y; ++i) 
+        {
+            if (IsWhitespace(GetLine(-i))) 
+            {
+                for (usize j = i; j < cursor.y; ++j) 
+                {
+                    if (!IsWhitespace(GetLine(-j)))
+                    {
+                        MoveUp(j);
+                        JumpEndLine();
+                        return; 
+                    }
+                }
+            }
+        }
+    }
+
+    void Document::JumpNextParagraph()
+    {
+        for (usize i = 0; CanMoveDown(i + 1); ++i) 
+        {
+            if (cursor.y + i == GetBoundingY() - 1)
+            {
+                return;
+            }
+
+            if (IsWhitespace(GetLine(i)))
+            {
+                for (usize j = i; CanMoveDown(j + 1); ++j) 
+                {
+                    if (!IsWhitespace(GetLine(j))) 
+                    {
+                        MoveDown(j);
+                        JumpBeginningLine();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    void Document::JumpNextParagraphEnd() 
+    {
+        if (IsWhitespace(GetLine(1))) 
+        {
+            for (usize i = 0; i < GetBoundingY(); ++i) 
+            {
+                if (IsWhitespace(GetLine(i)))
+                {
+                    for (usize j = i; j < GetBoundingY(); ++j) 
+                    {
+                        if (!IsWhitespace(GetLine(j))) 
+                        {
+                            for (usize k = j; k < GetBoundingY(); ++k) 
+                            {
+                                if (IsWhitespace(GetLine(k)))
+                                {
+                                    MoveDown(k - 1);
+                                    JumpEndLine();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
+        for (usize i = 0; i < GetBoundingY(); ++i) 
+        {
+            if (IsWhitespace(GetLine(i)))
+            {
+                MoveDown(i - 1);
+                JumpEndLine();
+                return;
+            }
+        }
+    }
+
+    void Document::JumpBeginingDocument()
+    {
+        cursor.x = 0;
+        cursor.y = 0;
+    }
+
+    void Document::JumpEndDocument()
+    {
+        cursor.y = GetBoundingY() - 1;
+    }
 }
