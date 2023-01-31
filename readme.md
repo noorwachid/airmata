@@ -9,7 +9,7 @@ Either you cry in agony or cry in joy.
 On-Development
 
 ## Documentation
-* [01 - Buffer Objects](docs/bufferobjects.md)
+* [01 - Document Objects](docs/document-objects.md)
 * [02 - Actions](docs/actions.md)
 * [03 - Modes](docs/modes.md)
 * [04 - Keybinding](docs/keybinding.md)
