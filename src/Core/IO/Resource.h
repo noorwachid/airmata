@@ -48,7 +48,7 @@ namespace IO
                         buf->base[i] = 0;
                 },
 
-                [](StreamContext* stream, isize result, const Buffer* buf)
+                [](StreamContext* stream, size result, const Buffer* buf)
                 {
                     if (result < 0)
                     {

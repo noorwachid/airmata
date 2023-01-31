@@ -3,7 +3,7 @@
 #include "Core/Event/KeyEvent.h"
 #include "Core/IO/Loop.h"
 #include "Core/IO/Resource.h"
-#include "Core/Integer.h"
+#include "Core/Integral.h"
 #include "Core/UI/Object/Document.h"
 #include "Core/UI/Sequence.h"
 #include "Core/Utility/ByteChecker.h"

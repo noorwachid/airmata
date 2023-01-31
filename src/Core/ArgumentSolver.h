@@ -3,7 +3,7 @@
 #include "Core/Container/Array.h"
 #include "Core/Container/HashTable.h"
 #include "Core/Container/String.h"
-#include "Core/Integer.h"
+#include "Core/Integral.h"
 #include <iostream>
 
 class ArgumentSolver

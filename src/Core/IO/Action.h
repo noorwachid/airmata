@@ -4,7 +4,7 @@
 #include "Core/Container/Function.h"
 #include "Core/Container/String.h"
 #include "Core/IO/LoopContext.h"
-#include "Core/Integer.h"
+#include "Core/Integral.h"
 
 namespace IO
 {
