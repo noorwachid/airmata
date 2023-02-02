@@ -76,6 +76,9 @@ namespace UI
         void JumpNextLine();
         void JumpNextLineEnd();
 
+        void JumpBeginningParagraph();
+        void JumpEndParagraph();
+
         void JumpPreviousParagraph();
         void JumpPreviousParagraphEnd();
 
@@ -87,8 +90,6 @@ namespace UI
 
     public:
         Array<String> lines;
-        String oob = " ";
-
         Vector2 cursor;
     };
 }

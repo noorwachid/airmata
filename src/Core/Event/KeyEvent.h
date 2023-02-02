@@ -103,6 +103,11 @@ struct KeyEvent : Event
     ModifierKey modifierKey = ModifierKey::None;
     int codepoint = 0;
 
+    bool IsModifierKeyHeld(ModifierKey newModifierKey)
+    {
+        return (modifierKey & newModifierKey) == newModifierKey;
+    }
+
     virtual String ToString() override;
 };
 

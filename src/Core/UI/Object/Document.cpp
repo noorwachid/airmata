@@ -76,66 +76,130 @@ namespace UI
                         break;
 
                     case Key::H:
+                        MoveLeft(1);
+                        break;
+
+                    case Key::T:
+                        MoveUp(1);
+                        break;
+
+                    case Key::N:
+                        MoveDown(1);
+                        break;
+
+                    case Key::S:
+                        MoveRight(1);
+                        break;
+
+                    case Key::A:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpPreviousWord();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousWordEnd();
                         break;
 
-                    case Key::T:
+                    case Key::O:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpPreviousLine();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousLineEnd();
                         break;
 
-                    case Key::N:
+                    case Key::E:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpNextLine();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpNextLineEnd();
                         break;
 
-                    case Key::S:
+                    case Key::U:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpNextWord();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpNextWordEnd();
                         break;
 
-                    case Key::M:
+                    case Key::Apostrophe:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpPreviousSentence();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousSentenceEnd();
                         break;
 
-                    case Key::W:
+                    case Key::Comma:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpPreviousParagraph();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpPreviousParagraphEnd();
                         break;
 
-                    case Key::V:
+                    case Key::Period:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpNextParagraph();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpNextParagraphEnd();
                         break;
 
-                    case Key::Z:
+                    case Key::P:
                         if (keyEvent.modifierKey == ModifierKey::None)
                             JumpNextSentence();
                         else if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
                             JumpNextSentenceEnd();
                         break;
 
-                    case Key::Return:
-                        if ((keyEvent.modifierKey & ModifierKey::Shift) == ModifierKey::Shift)
-                            MoveRight(1);
-                            
+                    case Key::Semicolon:
+                        if (keyEvent.IsModifierKeyHeld(ModifierKey::Shift))
+                        {
+                            program.mode = Mode::Insert;
+                            JumpBeginningLine();
+                            break;
+                        }
+
                         program.mode = Mode::Insert;
+                        break;
+
+                    case Key::Q:
+                        if (keyEvent.IsModifierKeyHeld(ModifierKey::Shift))
+                        {
+                            program.mode = Mode::Insert;
+                            JumpBeginningParagraph();
+                            MoveUp(1);
+                            InsertAt("\n");
+                            MoveDown(1);
+                            break;
+                        }
+
+                        program.mode = Mode::Insert;
+                        MoveUp(1);
+                        InsertAt("\n");
+                        MoveDown(1);
+                        break;
+
+                    case Key::J:
+                        if (keyEvent.IsModifierKeyHeld(ModifierKey::Shift))
+                        {
+                            program.mode = Mode::Insert;
+                            JumpEndParagraph();
+                            InsertAt("\n");
+                            MoveDown(1);
+                            break;
+                        }
+
+                        program.mode = Mode::Insert;
+                        InsertAt("\n");
+                        MoveDown(1);
+                        break;
+
+                    case Key::K:
+                        if (keyEvent.IsModifierKeyHeld(ModifierKey::Shift))
+                        {
+                            program.mode = Mode::Insert;
+                            JumpEndLine();
+                            break;
+                        }
+
+                        program.mode = Mode::Insert;
+                        MoveRight(1);
                         break;
 
                     case Key::Left:
@@ -194,7 +258,14 @@ namespace UI
 
                     default:
                         if (keyEvent.codepoint >= 32)
+                        {
                             InsertAt({ (char) keyEvent.codepoint, 0 });
+                            MoveRight(1);
+                        }
+                        else if (keyEvent.key == Key::Return)
+                        {
+                            InsertAt("\n");
+                        }
                         break;
                 }
             }
@@ -247,13 +318,22 @@ namespace UI
 
     void Document::InsertAt(const String& string)
     {
-        if (lines.empty())
+        for (char character: string) 
         {
-            return lines.push_back(string);
-        }
+            if (character == '\n')
+            {
+                lines.insert(lines.begin() + cursor.y + 1, String());
+                return;
+            }
 
-        String& line = lines[cursor.y];
-        line.insert(cursor.x, string);
+            if (lines.empty())
+            {
+                lines.push_back(String());
+            }
+
+            String& line = lines[cursor.y];
+            line.insert(cursor.x, { character, 0 });
+        }
     }
 
     void Document::DeleteBefore() 
@@ -279,7 +359,7 @@ namespace UI
     {
         return lines.empty() || lines[cursor.y].empty() 
             ? 1
-            : lines[cursor.y].size();
+            : lines[cursor.y].size() + (program.mode == Mode::Insert ? 1 : 0);
     }
 
     int Document::GetBoundingY()
@@ -722,6 +802,32 @@ namespace UI
         cursor.x = GetBoundingX() - 1;
     }
 
+    void Document::JumpBeginningParagraph()
+    {
+        for (usize i = 0; i < cursor.y; ++i) 
+        {
+            if (IsWhitespace(GetLine(-i))) 
+            {
+                MoveUp(i - 1);
+                JumpBeginningLine();
+                return;
+            }
+        }
+    }
+
+    void Document::JumpEndParagraph()
+    {
+        for (usize i = 0; i < GetBoundingY(); ++i) 
+        {
+            if (IsWhitespace(GetLine(i)))
+            {
+                MoveDown(i - 1);
+                JumpEndLine();
+                return;
+            }
+        }
+    }
+
     void Document::JumpPreviousParagraph() 
     {
         if (IsWhitespace(GetLine(-1))) 
@@ -752,15 +858,7 @@ namespace UI
             return;
         }
 
-        for (usize i = 0; i < cursor.y; ++i) 
-        {
-            if (IsWhitespace(GetLine(-i))) 
-            {
-                MoveUp(i - 1);
-                JumpBeginningLine();
-                return;
-            }
-        }
+        JumpBeginningParagraph();
     }
 
     void Document::JumpPreviousParagraphEnd() 
@@ -834,15 +932,7 @@ namespace UI
             return;
         }
 
-        for (usize i = 0; i < GetBoundingY(); ++i) 
-        {
-            if (IsWhitespace(GetLine(i)))
-            {
-                MoveDown(i - 1);
-                JumpEndLine();
-                return;
-            }
-        }
+        JumpEndParagraph();
     }
 
     void Document::JumpBeginingDocument()
