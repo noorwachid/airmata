@@ -16,7 +16,9 @@
 | LSB        |                           |                                |     |      |
 | RSB        |                           |                                |     |      |
 | Delete     |                           |                                |     |      |
-|            |                           |                                |     |      |
+
+| Key        | Unmask                    | Shift                          | Alt | Ctrl |
+| --         | --                        | --                             | --  | --   |
 | Tab        |                           |                                |     |      |
 | Apostrophe | Prev Sentence             | Prev Sentence End              |     |      |
 | Comma      | Prev Paragraph            | Prev Paragraph End             |     |      |
@@ -31,7 +33,9 @@
 | Slash      |                           |                                |     |      |
 | Equal      |                           |                                |     |      |
 | Backslash  |                           |                                |     |      |
-|            |                           |                                |     |      |
+
+| Key        | Unmask                    | Shift                          | Alt | Ctrl |
+| --         | --                        | --                             | --  | --   |
 | Escape     |                           |                                |     |      |
 | A          | Prev Word                 | Prev Word End                  |     |      |
 | O          | Prev Line                 | Prev Line End                  |     |      |
@@ -45,7 +49,9 @@
 | S          | Move Cursor Right         | Swap Cursor Right              |     |      |
 | Minus      |                           |                                |     |      |
 | Enter      |                           |                                |     |      |
-|            |                           |                                |     |      |
+
+| Key        | Unmask                    | Shift                          | Alt | Ctrl |
+| --         | --                        | --                             | --  | --   |
 | Semicolon  | Insert Left Cursor        | Insert Line Beg NW             |     |      |
 | Q          | Insert NL Above Curr Line | Insert NL Above Curr Paragraph |     |      |
 | J          | Insert NL Below Curr Line | Insert NL Below Curr Paragraph |     |      |
@@ -56,7 +62,9 @@
 | W          |                           |                                |     |      |
 | V          |                           |                                |     |      |
 | Z          |                           |                                |     |      |
-|            |                           |                                |     |      |
+
+| Key        | Unmask                    | Shift                          | Alt | Ctrl |
+| --         | --                        | --                             | --  | --   |
 | Space      |                           |                                |     |      |
 | Left       | Move Cursor Left          | Swap Cursor Left               |     |      |
 | Up         | Move Cursor Up            | Swap Cursor Up                 |     |      |
