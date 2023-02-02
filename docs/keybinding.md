@@ -1,5 +1,7 @@
 # Keybinding
 
+## Normal Mode
+
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
 | Grave      |                           |                                |     |      |
@@ -19,7 +21,7 @@
 
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
-| Tab        |                           |                                |     |      |
+| Tab        | Indent Right              | Indent Left                    |     |      |
 | Apostrophe | Prev Sentence             | Prev Sentence End              |     |      |
 | Comma      | Prev Paragraph            | Prev Paragraph End             |     |      |
 | Period     | Next Paragraph            | Next Paragraph End             |     |      |
@@ -27,28 +29,28 @@
 | Y          |                           |                                |     |      |
 | F          |                           |                                |     |      |
 | G          | Delete                    |                                |     |      |
-| C          | Cut                       |                                |     |      |
-| R          | Copy                      |                                |     |      |
-| L          | Paste                     |                                |     |      |
-| Slash      |                           |                                |     |      |
-| Equal      |                           |                                |     |      |
-| Backslash  |                           |                                |     |      |
+| C          | Cut                       | Cut System                     |     |      |
+| R          | Copy                      | Copy System                    |     |      |
+| L          | Paste                     | Paste System                   |     |      |
+| Slash      | Search                    | Regex Search                   |     |      |
+| Equal      | Format                    |                                |     |      |
+| Backslash  | Fold                      | Unfold                         |     |      |
 
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
-| Escape     |                           |                                |     |      |
+| Escape     | Normal Mode               |                                |     |      |
 | A          | Prev Word                 | Prev Word End                  |     |      |
 | O          | Prev Line                 | Prev Line End                  |     |      |
 | E          | Next Line                 | Next Line End                  |     |      |
 | U          | Next Word                 | Next Word End                  |     |      |
-| I          |                           |                                |     |      |
-| D          |                           |                                |     |      |
+| I          | Undo                      | Redo                           |     |      |
+| D          | Global Prev Jump          | Local Prev Jump                |     |      |
 | H          | Move Cursor Left          | Swap Cursor Left               |     |      |
 | T          | Move Cursor Up            | Swap Cursor Up                 |     |      |
 | N          | Move Cursor Down          | Swap Cursor Down               |     |      |
 | S          | Move Cursor Right         | Swap Cursor Right              |     |      |
-| Minus      |                           |                                |     |      |
-| Enter      |                           |                                |     |      |
+| Minus      | Global Next Jump          | Local Next Jump                |     |      |
+| Enter      | Search Mode               |                                |     |      |
 
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
@@ -65,7 +67,7 @@
 
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
-| Space      |                           |                                |     |      |
+| Space      | Analyzer Mode             |                                |     |      |
 | Left       | Move Cursor Left          | Swap Cursor Left               |     |      |
 | Up         | Move Cursor Up            | Swap Cursor Up                 |     |      |
 | Down       | Move Cursor Down          | Swap Cursor Down               |     |      |
