@@ -26,10 +26,10 @@
 | P          | Next Sentence             | Next Sentence End              |     |      |
 | Y          |                           |                                |     |      |
 | F          |                           |                                |     |      |
-| G          |                           |                                |     |      |
-| C          |                           |                                |     |      |
-| R          |                           |                                |     |      |
-| L          |                           |                                |     |      |
+| G          | Delete                    |                                |     |      |
+| C          | Cut                       |                                |     |      |
+| R          | Copy                      |                                |     |      |
+| L          | Paste                     |                                |     |      |
 | Slash      |                           |                                |     |      |
 | Equal      |                           |                                |     |      |
 | Backslash  |                           |                                |     |      |
@@ -57,11 +57,11 @@
 | J          | Insert NL Below Curr Line | Insert NL Below Curr Paragraph |     |      |
 | K          | Insert Right Cursor       | Insert Line End NW             |     |      |
 | X          |                           |                                |     |      |
-| B          |                           |                                |     |      |
-| M          |                           |                                |     |      |
-| W          |                           |                                |     |      |
-| V          |                           |                                |     |      |
-| Z          |                           |                                |     |      |
+| B          | Select [Object]           | Select Inner [Object]          |     |      |
+| M          | Prev [Object]             | Prev [Object] End              |     |      |
+| W          | Prev Inner [Object]       | Prev Inner [Object] End        |     |      |
+| V          | Next Inner [Object]       | Next Inner [Object] End        |     |      |
+| Z          | Next [Object]             | Next [Object] End              |     |      |
 
 | Key        | Unmask                    | Shift                          | Alt | Ctrl |
 | --         | --                        | --                             | --  | --   |
